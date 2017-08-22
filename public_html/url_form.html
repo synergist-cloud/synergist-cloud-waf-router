@@ -9,22 +9,21 @@
 <meta name="generator" content="vi">
 <meta name="keywords" content="Synergist cloud, cloud job bagging system, job costing system, Synergist, Balinder, Walia">
 <meta name="description" content="nginx test page">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="css/Admin.min.css">
-   <link rel="stylesheet" href="css/basictable.css">
- 
-  <link rel="stylesheet" href="css/skins/_all-skins.min.css">
+ <!-- Tell the browser to be responsive to screen width -->
+ <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+ <!-- Bootstrap 3.3.6 -->
+ <link rel="stylesheet" href="css/bootstrap.min.css">
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+ <!-- Ionicons -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+ <!-- Theme style -->
+ <link rel="stylesheet" href="css/Admin.min.css">
+ <link rel="stylesheet" href="css/skins/_all-skins.min.css">
  </head>
- <body class="hold-transition skin-blue sidebar-mini">
+ <body class="hold-transition skin-blue sidebar-mini">	
  <div class="wrapper">
+ 
 
   <header class="main-header">
     <!-- Logo -->
@@ -358,13 +357,14 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        URL
-        <small>List</small>
+        <span id="pageHeadingID">Add</span>
+        <small>URL</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -374,95 +374,154 @@
 
     <!-- Main content -->
     <section class="content">
-		<div class="row">
-	  		<div class="content table-responsive table-full-width">
-		 		<div class="table-responsive" style="border:none;" >
-                                <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint"  style="background-color: rgb(255, 255, 255); border-radius: 4px;" >
-                                    <thead>
-                                        <tr>
-                                            <th>UNIQUE ID</th>
-                                            <th>LINK</th>
-                                            <th>SERVICE</th>
-                                            <th>OAUTH ID</th>
-                                            <th>MODIFIED</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </thead>
-                                     <tfoot>
-                                        <tr>
-                                            <th>UNIQUE ID</th>
-                                            <th>LINK</th>
-                                            <th>SERVICE</th>
-                                            <th>OAUTH ID</th>
-                                            <th>MODIFIED</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody id="display_content"></tbody>
-                                </table>
-        	    </div>
-			</div>
-		</div>
+	 
+      <form class="form-horizontal" id="EntryForm">
+       		 <div class="row">
+           		  <div class=" col-sm-12 col-lg-8">
+             		<input id="uuid" name="uuid" type="hidden" value="">
+  
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">URL<sup class="required">*</sup></label>
+    <div class="col-sm-8 ">
+       <input class="form-control required" id="link" placeholder="URL" name="link" type="text">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label for="" class="col-sm-3 control-label">Service<sup class="required">*</sup></label>
+    <div class="col-sm-8 ">
+       <input class="form-control required" id="service" placeholder="Service" name="service" type="text">
+    </div>
+  </div>
+  <div class="form-group" id="oauthDiv" style="display:none;">
+    <label for="" class="col-sm-3 control-label">Oauth </label>
+    <div class="col-sm-8 ">
+       <input class="form-control" id="auth" disabled type="text">
+    </div>
+  </div>
+  
+  				<div class="col-sm-12 margin-top-15 " align="CENTER">
+                <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+                </div>
+   </div>
+       			 
+             
+       		 </div>
+             
+             </form>
+   </section>
+   
+				
+		
+		
+		
+		
+        <!-- right col -->
+      </div>
       <!-- /.row (main row) -->
 
     </section>
 
   </div>
- <footer class="main-footer">
+  <footer class="main-footer">
     
     <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights
     reserved.
   </footer>
+  
 </div>
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-function dateTimeFromUnix(UNIX_timestamp){
-	var a = new Date(UNIX_timestamp * 1000);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	var year = a.getFullYear();
-	var month = months[a.getMonth()];
-	var dateNum = a.getDate();
-	
-	var time = month + ' ' + dateNum + ' ' + year;
-	
-  	var hour = a.getHours();
-	var timeStr="am";
-  	if(hour>12){
-  		timeStr="pm";
-  		hour= hour-12;
-  	} 
-  	var min = a.getMinutes().toString();
-  	if(min.length==1)	{
-  		min = "0"+min;
-  	}
-  	time += ', '+ hour + ':' + min + " " + timeStr ;
-	return time;
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+    function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
 }
 
-$(document).ready(function() {
- 	//$.getJSON("api_fetch_links.json",function(html){
- 	
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_links",function(html){
-		if(html.aaData && html.aaData.length>0){
-			var drawContentStr='';
-			$.each(html.aaData, function(i,row){
-				var valueObj = JSON.parse(row.value);
-				drawContentStr+='<tr><td>'+row.key+'</td><td>'+valueObj.link+'</td><td>'+valueObj.service+'</td><td>';
-				if(valueObj.oauth){
-					drawContentStr+=valueObj.oauth;
+    $(document).ready(function() {
+		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
+			$("#uuid").val(getUrlVars()["token"]);
+			$.getJSON("https://dev.synergist.cloud/api_get_url_value?token="+getUrlVars()["token"],function(result){
+			//$.getJSON("api_get_url_value.json?token="+getUrlVars()["token"],function(result){
+				if(result.success && result.aaData && result.aaData.length>0){
+					$("#pageHeadingID").html("Edit");
+					var aaDataStr= result.aaData;
+					var aaDataObj = JSON.parse(aaDataStr);
+					if(aaDataObj.link && aaDataObj.link!="")	{
+						$("#link").val(aaDataObj.link);
+					}
+					if(aaDataObj.service && aaDataObj.service!="")	{
+						$("#service").val(aaDataObj.service);
+					}
+					if(aaDataObj.oauth && aaDataObj.oauth!="")	{
+						$("#auth").val(aaDataObj.oauth);
+						$("#oauthDiv").show();
+					}
 				}
-				drawContentStr+='</td><td>'+dateTimeFromUnix(valueObj.modified)+'</td><td><a href="url_form.html?token='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a></td></tr>';
 			});
-			$('#display_content').html(drawContentStr);
 		}
-		$('#table-breakpoint').basictable({
-        	breakpoint: 751
-      	});
-	});
-});
+      $("#EntryForm").validate({
+			ignore: "",
+			onkeyup: false,
+			errorClass: 'error',
+			validClass: 'valid',
+			errorElement: "em",
+			errorPlacement: function(error, element) {
+				$(element).closest('div').append(error);
+			},
+			onfocusout: false,
+			invalidHandler: function(form, validator) {
+				var errors = validator.numberOfInvalids();
+				if (errors) {                    
+					validator.errorList[0].element.focus();
+				}
+			},
+			rules: {
+				link: { required: true },
+				service: { required: true }
+			},
+			submitHandler: function(form) {
+				var tokenStr=$("#uuid").val();
+				if(tokenStr=="") {
+					var tokenStr=guid();
+				}
+							$.ajax({
+								url: 'https://dev.synergist.cloud/api_set_url',
+								type: 'GET',
+								data: {"token" : tokenStr, "link" : $("#link").val(), "service" : $("#service").val()},
+								contentType: false,
+								success: function(response){
+									if(response.success){
+										window.location.href = backendDirectory+"/url_form?token="+tokenStr;
+									} else if(response.error) {
+										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+									}else {
+										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
+									}
+								}
+							});
+ 			}
+		});		
+
+      
+    });
   </script>
-<script src="js/basictable.js"></script>
+
+  <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
 
 </body>
