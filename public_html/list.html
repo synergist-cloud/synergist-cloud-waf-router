@@ -32,7 +32,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="images/jobshout-small.gif"  STYLE="padding-left:15px; "></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><IMG SRC="images/jobshout-logo.png" ALT=""/></span>
+      <span class="logo-lg"><IMG SRC="images/webcrm-logo.png" ALT=""/></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -353,6 +353,19 @@
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
+        <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Sites</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
+          </ul>
+        </li>
 		</ul>
     </section>
     <!-- /.sidebar -->
@@ -411,7 +424,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
  	//$.getJSON("api_fetch_links.json",function(html){
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_links",function(html){
+ 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=url",function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){

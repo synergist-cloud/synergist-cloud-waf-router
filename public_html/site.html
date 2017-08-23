@@ -32,7 +32,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="images/jobshout-small.gif"  STYLE="padding-left:15px; "></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><IMG SRC="images/jobshout-logo.png" ALT=""/></span>
+      <span class="logo-lg"><IMG SRC="images/webcrm-logo.png" ALT=""/></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -353,6 +353,19 @@
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
+        <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Sites</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
+          </ul>
+        </li>
 		</ul>
     </section>
     <!-- /.sidebar -->
@@ -419,8 +432,7 @@
 											  		
 											  </tbody>
 											</table>
-											<span style="float:right;font-size:12px;font-style:italic;color:#d9534f">Note: Please submit the form to save the changes!</span>
-											</div>
+										</div>
 											
 										</div>
 									</div>
@@ -603,7 +615,7 @@ function generateHostsObjectJson(){
 	var i=0;
 	$('.hostItemClass').each(function(){
 		var createObject={};
-		createObject['uuid']=$(this).find('#uuid').val();
+		//createObject['uuid']=$(this).find('#uuid').val();
   		createObject['host_name']=$(this).find('#host_name').val();
   		createObject['ip_address']=$(this).find('#ip_address').val();
   		createArr[i]=createObject;
@@ -672,13 +684,13 @@ function createHostRow(){
 		if(uuidStr==""){
 			uuidStr = guid();
 		}
-		var contentStr="<tr class='hostItemClass hosttr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='host_name' value='"+$('#item_host_name').val()+"'>"+$('#item_host_name').val()+"</td>";
+		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='host_name' value='"+$('#item_host_name').val()+"'>"+$('#item_host_name').val()+"</td>";
 		contentStr+="<td><input type='hidden' id='ip_address' value='"+$('#host_ip').val()+"'>"+$('#host_ip').val()+"</td>";
-		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_host_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_host_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
-		if($("#item_uuid").val()!=""){
+		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_host_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_host_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+		if($("#host_uuid").val()!=""){
 			$(".hosttr_"+uuidStr).html(contentStr);
 		}else{
-			$("#host_items").append(contentStr);
+			$("#host_items").append("<tr class='hostItemClass hosttr_"+uuidStr+"'>"+contentStr+"</tr>");
 		}
 		$('#hosts_table').basictable('destroy');
 		$('#hosts_table').basictable({
@@ -697,15 +709,15 @@ function savelinkitem (){
 		if(uuidStr==""){
 			uuidStr = guid();
 		}
-		var contentStr="<tr class='itemClass itemtr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='location' value='"+$('#item_location').val()+"'>"+$('#item_location').val()+"</td>";
+		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='location' value='"+$('#item_location').val()+"'>"+$('#item_location').val()+"</td>";
 		contentStr+="<td><input type='hidden' id='regex' value='"+$('#item_regex').val()+"'>"+$('#item_regex').val()+"</td>";
 		contentStr+="<td><input type='hidden' id='url' value='"+$('#item_url').val()+"'>"+$('#item_url').val()+"</td>";
 		contentStr+="<td><input type='hidden' id='flag' value='"+$('#item_flag').val()+"'>"+$('#item_flag').val()+"</td>";
-		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
 		if($("#item_uuid").val()!=""){
 			$(".itemtr_"+uuidStr).html(contentStr);
 		}else{
-			$("#link_items").append(contentStr);
+			$("#link_items").append("<tr class='itemClass itemtr_"+uuidStr+"'>"+contentStr+"</tr>");
 		}
 		$('#rules_table').basictable('destroy');
 		$('#rules_table').basictable({
@@ -769,7 +781,19 @@ $(document).ready(function() {
 								contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
 							});
 							$("#link_items").html(contentStr);
-						}else{
+						} else if(key=="hosts") {
+							var contentStr='';
+							$.each(JSON.parse(value), function(i,row){
+								var uuidStr=guid();
+								if(row.uuid && row.uuid!="")	{
+									uuidStr= row.uuid;
+								}
+								contentStr+="<tr class='hostItemClass hosttr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='host_name' value='"+row.host_name+"'>"+row.host_name+"</td>";
+								contentStr+="<td><input type='hidden' id='ip_address' value='"+row.ip_address+"'>"+row.ip_address+"</td>";
+								contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_host_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_host_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+							});
+							$("#host_items").html(contentStr);
+						} else{
 							$("#"+key).val(value);
 						}
 					});
