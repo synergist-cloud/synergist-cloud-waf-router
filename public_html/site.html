@@ -394,7 +394,7 @@
            		  <div class=" col-sm-12 col-lg-12">
              		<input type="hidden" class="form-control" id="rules"/>
              		<input type="hidden" class="form-control" id="hosts"/>
-             		<input type="hidden" class="form-control" id="uuid"/>
+             		<input type="hidden" class="form-control" id="uuid"/><input type="hidden" class="form-control" id="unique_prefix" value="site"/>
   <div class="form-group">
     <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
     <div class="col-sm-6 ">
@@ -755,12 +755,12 @@ function generate_manual_code(name,code){
 		result = result.replace(/^\s+|\s+$/g,'');
 		result=result.replace(/\s/g, '-');
 		result=result.toLowerCase();
-		$("#"+code).val(result);
+$("#"+code).val(result);
 }
 $(document).ready(function() {
 		if(getUrlVars() && getUrlVars()["code"]  && getUrlVars()["code"]!="") {
 			$("#code").val(getUrlVars()["code"]);
-			$.getJSON("https://dev.synergist.cloud/api_fetch_value?unique=site:"+getUrlVars()["code"],function(result){
+$.getJSON("https://dev.synergist.cloud/api_get_key?key=site:"+getUrlVars()["code"],function(result){
 			//$.getJSON("api_fetch_value.json",function(result){
 				if(result.success && result.aaData && result.aaData.length>0){
 					$("#pageHeadingID").html("Edit");
@@ -834,17 +834,18 @@ $(document).ready(function() {
 					var tokenStr=guid();
 				}
 							$.ajax({
-								url: 'https://dev.synergist.cloud/api_set_site',
+								url: 'https://dev.synergist.cloud/api_set_key',
 								type: 'GET',
-								data: {"name" : $("#name").val(), "code" : $("#code").val(), "uuid" : tokenStr, "hosts" : $("#hosts").val(), "rules" : $("#rules").val()},
+								data: {"name" : $("#name").val(), "unique_value" : $("#code").val(), "unique_prefix" : $("#unique_prefix").val(),"code" : $("#code").val(), "uuid" : tokenStr, "hosts" : $("#hosts").val(), "rules" : $("#rules").val()},
 								contentType: false,
+dataType: 'json',
 								success: function(response){
 									if(response.success){
-										window.location.href = "/site?id="+tokenStr;
+							window.location.href = "/site.html?code="+$("#code").val()+"&"+Math.random();
 									} else if(response.error) {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+										$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 									}else {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
+										$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
 									}
 								}
 							});

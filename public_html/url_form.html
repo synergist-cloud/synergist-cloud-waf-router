@@ -455,8 +455,7 @@ function getUrlVars() {
     $(document).ready(function() {
 		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
 			$("#uuid").val(getUrlVars()["token"]);
-			$.getJSON("https://dev.synergist.cloud/api_get_url_value?token="+getUrlVars()["token"],function(result){
-			//$.getJSON("api_get_url_value.json?token="+getUrlVars()["token"],function(result){
+			$.getJSON("https://dev.synergist.cloud/api_get_key?key=url:"+getUrlVars()["token"],function(result){
 				if(result.success && result.aaData && result.aaData.length>0){
 					$("#pageHeadingID").html("Edit");
 					var aaDataStr= result.aaData;
@@ -500,13 +499,14 @@ function getUrlVars() {
 					var tokenStr=guid();
 				}
 							$.ajax({
-								url: 'https://dev.synergist.cloud/api_set_url',
-								type: 'GET',
-								data: {"token" : tokenStr, "link" : $("#link").val(), "service" : $("#service").val()},
-								contentType: false,
-								success: function(response){
+url: 'https://dev.synergist.cloud/api_set_key',
+type: 'GET',
+data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
+contentType: false,
+dataType: 'json',
+success: function(response){
 									if(response.success){
-										window.location.href = backendDirectory+"/url_form?token="+tokenStr;
+										window.location.href = "/url_form.html?token="+tokenStr;
 									} else if(response.error) {
 										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 									}else {
