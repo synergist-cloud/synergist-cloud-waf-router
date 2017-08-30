@@ -30,6 +30,33 @@ include includes/synergist_ssl_cert.conf;
 
         resolver                  8.8.8.8 valid=300s;
 
+    location /api_request {
+       content_by_lua_block {
+           local inputContentStr= {}
+           local outputData = {}
+           local cjson = require 'cjson'
+
+           if ngx.req.get_method() == "POST" then
+	      ngx.req.get_body_data()
+	      local success, response = pcall(cjson.decode, ngx.var.request_body)
+              if success then
+	      	 ngx.say(""..cjson.encode(response))
+	      end
+	   elseif ngx.req.get_method() == "GET" then
+	     local args = ngx.req.get_uri_args()
+	     for key, val in pairs(args) do
+                            if type(val) == "table" then
+                             --ngx.say(key, ": ", table.concat(val, ", "))
+                            else
+                                inputContentStr[key] = val
+                            end
+                       end
+		       ngx.say(""..cjson.encode(inputContentStr))
+	   else
+		ngx.say("invalid method: " .. ngx.req.get_body_data())
+    	   end
+       }
+    }
 	location /api_set_key {
             content_by_lua_block {
 	    	local inputContentStr= {}
@@ -201,7 +228,7 @@ include includes/synergist_ssl_cert.conf;
 
 			 local prefix_str = ngx.var.arg_prefix or ""
 			 if( prefix_str~="" ) then
-			     prefix_str = prefix_str..':*'
+			     prefix_str = prefix_str..'*'
 			 else
 			     prefix_str = '*'
 			 end
@@ -326,5 +353,99 @@ include includes/synergist_ssl_cert.conf;
                 end
             }
         }
+	location /api_set_site {
+            content_by_lua_block {
+	    	local inputContentStr= {}
+		local outputData = {}
+		local cjson = require 'cjson'
 
+		local unique_str = ngx.var.arg_code or ""
+
+		if( unique_str ~= "" )
+                then
+		   local args = ngx.req.get_uri_args()
+
+		   for key, val in pairs(args) do
+		      if type(val) == "table" then
+                      	 --ngx.say(key, ": ", table.concat(val, ", "))
+		      else
+			 inputContentStr[key] = val
+		      end
+         	   end
+		   --ngx.say(""..cjson.encode(inputContentStr))
+		   local timeLocalNow = os.time(os.date('*t'))
+		   inputContentStr["modified"] = timeLocalNow
+
+		   local redis = require "resty.redis"
+                   local red = redis:new()
+
+                   red:set_timeout(1000) -- 1 sec
+
+                   local ok, err = red:connect("synelastcache-001.xwlhv4.0001.euw1.cache.amazonaws.com", 6379)
+                   if not ok then
+                      outputData['error'] = "Failed to connect: "..err
+                      ngx.say(cjson.encode(outputData))
+                      return
+		   end
+		
+		   unique_str = "site:"..unique_str
+		   local get_res, get_err = red:get(unique_str)
+		   if not get_res then
+		      inputContentStr["created"] = timeLocalNow
+		   end
+
+		   if get_res == ngx.null then
+		      inputContentStr["created"] = timeLocalNow
+		   else
+		       local tempExistingValueArr = cjson.decode(get_res)
+		       if(tempExistingValueArr["hosts"] and (tempExistingValueArr["hosts"]~="")) then
+		          local existingHostsArr= cjson.decode(tempExistingValueArr["hosts"])
+			  local i=1
+			  while ( i <= table.getn(existingHostsArr) ) do
+			      red:del("host:"..existingHostsArr[i]["host_name"])
+			      i = i+1
+			  end
+		       end
+		   end
+
+		   ok, err = red:set(unique_str, cjson.encode(inputContentStr))
+		   if not ok then
+		      outputData['error'] = "Failed to set "..unique_str..": "..err
+		      ngx.say(cjson.encode(outputData))
+		      return
+		   end
+
+		   if(inputContentStr["hosts"]~="") then
+		   	local hostsContentArr = cjson.decode(inputContentStr["hosts"])
+			local l  = 1
+			local m  = table.getn(hostsContentArr)
+			while ( l <= m ) do
+			      local tempHostName = "host:"..hostsContentArr[l].host_name
+			      local tempHostContentArr = hostsContentArr[l]
+			      for key, val in pairs(inputContentStr) do
+			      	  if(key~="hosts") then
+				     tempHostContentArr[key] = val
+				  end 
+			      end 
+			      red:set(tempHostName, cjson.encode(tempHostContentArr))
+			      l = l + 1
+			end
+		   end
+		   outputData["success"] = "OK"
+		   ngx.say(cjson.encode(outputData))
+
+		   -- or just close the connection right away:
+                   local ok, err = red:close()
+                   if not ok then
+                       outputData['error'] = "Failed to close".. err
+                       ngx.say(cjson.encode(outputData))
+                       return
+                   end   
+		   return
+		 else
+		    outputData['error'] = "Please pass the required parameters"
+                    ngx.say(cjson.encode(outputData))
+		 end
+               }
+        }
 }
