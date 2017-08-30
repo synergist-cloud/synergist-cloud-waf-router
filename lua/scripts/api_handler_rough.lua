@@ -31,24 +31,6 @@ include includes/synergist_ssl_cert.conf;
         resolver                  8.8.8.8 valid=300s;
 
 
-location = /test {
-     content_by_lua_block {
-         ngx.req.read_body()
-         local args, err = ngx.req.get_post_args()
-         if not args then
-             ngx.say("failed to get post args: ", err)
-             return
-         end
-         for key, val in pairs(args) do
-             if type(val) == "table" then
-                 ngx.say(key, ": ", table.concat(val, ", "))
-             else
-                 ngx.say(key, ": ", val)
-             end
-         end
-     }
- }
-
     location /api_request {
        content_by_lua_block {
            local inputContentStr= {}
