@@ -396,17 +396,28 @@
                <input type="hidden" class="form-control" id="uuid"/><input type="hidden" class="form-control" id="unique_prefix" value="site"/>
   <div class="form-group">
     <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
-    <div class="col-sm-6 ">
+    <div class="col-sm-5 ">
        <input class="form-control required" id="name" placeholder="Name" name="name" type="text" onblur="generate_manual_code('name','code');" onkeyup="generate_manual_code('name','code');">
     </div>
-  </div>
-  <div class="form-group">
+    
     <label for="" class="col-sm-1 control-label">Code<sup class="required">*</sup></label>
-    <div class="col-sm-6 ">
+    <div class="col-sm-5 ">
        <input class="form-control required" id="code" placeholder="Code" name="code" type="text">
        <span STYLE="font-size:12px; color:#737373;">Unique value</span>
     </div>
+  </div><div class="form-group">
+    <label for="" class="col-sm-1 control-label">SSL Certificate</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="ssl_certificate" placeholder="SSL Certificate" name="ssl_certificate" type="text">
+    </div>
   </div>
+  <div class="form-group">
+    <label for="" class="col-sm-1 control-label">SSL Certificate Key</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="ssl_certificate_key" placeholder="SSL Certificate Key" name="ssl_certificate_key" type="text">
+    </div>
+  </div>
+  
   <div CLASS="ROW host_details_class" style="display:none;">
     <div CLASS="col-md-12 itemsContent" STYLE="margin-left:13px;">
       <span style="float:right; font-weight:bold;">
@@ -414,6 +425,7 @@
 	</span>
       </div>
     </div>
+    
   <div CLASS="row host_details_class" style="display:none;">
     <div class="itemsContent col-md-12" id="itemsTable">
       <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Host Details</label>
