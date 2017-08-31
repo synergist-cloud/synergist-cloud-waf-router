@@ -58,6 +58,76 @@ include includes/synergist_ssl_cert.conf;
     	   end
        }
     }
+    location /api_post_key {
+       content_by_lua_block {
+           local inputContentStr= {}
+           local outputData = {}
+           local cjson = require 'cjson'
+           local unique_str = ""
+           local unique_prefix = ""
+
+	      ngx.req.read_body()
+              local args, err = ngx.req.get_post_args()
+              if not args then
+	      	 outputData['error'] = "Failed to get post args: "..err
+              	 ngx.say(cjson.encode(outputData))
+             	 return
+              end
+
+           for key, val in pairs(args) do
+             if type(val) == "table" then
+             	inputContentStr[key] = table.concat(val, ", ")
+             else
+		if key == "unique_value" then
+		   unique_str= val
+		elseif key == "unique_prefix" then
+		   unique_prefix = val
+		else
+		   inputContentStr[key] = val
+		end
+             end
+           end
+
+	   if( unique_str ~= "" and unique_prefix ~= "" )
+	   then
+	       local timeLocalNow = os.time(os.date('*t'))
+	       inputContentStr["modified"] = timeLocalNow
+	       
+	       local redis = require "resty.redis"
+	       local red = redis:new()
+	       
+	       red:set_timeout(1000) -- 1 sec
+	       local ok, err = red:connect("synelastcache-001.xwlhv4.0001.euw1.cache.amazonaws.com", 6379)
+                       if not ok then
+                            outputData['error'] = "Failed to connect: "..err
+                            ngx.say(cjson.encode(outputData))
+			    return 
+                       end
+
+                        ok, err = red:set(unique_str, cjson.encode(inputContentStr))
+                        if not ok then
+                              outputData['error'] = "Failed to set "..unique_str..": "..err
+                              ngx.say(cjson.encode(outputData))
+                              return
+                        end
+
+                        -- or just close the connection right away:
+                        local ok, err = red:close()
+                        if not ok then
+                           outputData['error'] = "Failed to close".. err
+                              ngx.say(cjson.encode(outputData))
+                              return
+                        end
+
+                        outputData["success"] = "OK"
+                        ngx.say(cjson.encode(outputData))
+           else
+		outputData['error'] = "Please pass the required parameters"
+                ngx.say(cjson.encode(outputData))
+	   end
+	   return
+       }
+    }
 	location /api_set_key {
             content_by_lua_block {
 	    	local inputContentStr= {}

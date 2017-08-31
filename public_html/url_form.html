@@ -499,8 +499,8 @@ function getUrlVars() {
 					var tokenStr=guid();
 				}
 							$.ajax({
-url: 'https://dev.synergist.cloud/api_set_key',
-type: 'GET',
+url: 'https://dev.synergist.cloud/api_post_key',
+type: 'POST',
 data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
 contentType: false,
 dataType: 'json',
