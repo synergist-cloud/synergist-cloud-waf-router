@@ -436,6 +436,9 @@ $(document).ready(function() {
 			$.each(html.aaData, function(i,row){
 				drawContentStr+='<tr><td>'+row.key+'</td>';
 				var valueObj = JSON.parse(row.value);
+				if(typeof(valueObj)=="string"){
+					valueObj = JSON.parse(valueObj);
+				}
 				drawContentStr+='<td>'+valueObj.host_name+'</td><td>'+valueObj.name+'</td><td>'+valueObj.ip_address+'</td>';
 				drawContentStr+='<td><a href="site.html?code='+valueObj.code+'" title="Edit"><i class="fa fa-edit"></i></a></td>';
 				drawContentStr+='</tr>';

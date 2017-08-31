@@ -461,6 +461,9 @@ $(document).ready(function() {
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){
 				var valueObj = JSON.parse(row.value);
+				if(typeof(valueObj)=="string"){
+					valueObj = JSON.parse(valueObj);
+				}
 				drawContentStr+='<tr><td>'+row.key+'</td><td>'+valueObj.link+'</td><td>'+valueObj.service+'</td><td>';
 				if(valueObj.oauth){
 					drawContentStr+=valueObj.oauth;
