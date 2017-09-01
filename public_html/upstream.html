@@ -19,9 +19,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
  <!-- Theme style -->
  <link rel="stylesheet" href="css/Admin.min.css">
+   <link rel="stylesheet" href="css/basictable.css">
  <link rel="stylesheet" href="css/skins/_all-skins.min.css">
  </head>
- <body class="hold-transition skin-blue sidebar-mini">	
+<body class="hold-transition skin-blue sidebar-mini">
  <div class="wrapper">
  
 
@@ -169,8 +170,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="header">Switch Site to</li>
-			  
-			   <li STYLE="padding:15px;" >
+	        
+	         <li STYLE="padding:15px;" >
                   
                       <input TYPE="text" CLASS="form-control"  STYLE="height:34px; border-radius:4px; border: 1px solid #ddd;">
                     
@@ -187,59 +188,59 @@
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  <li>
+		    
+		    
+		    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		      
+		      
+		      
+		      <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		        
+		        
+		        
+		        <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+			  
+			  
+			  
+			  <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  
-				  <li>
+			    
+			    
+			    
+			    
+			    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  <li>
+			      <li>
                     <a href="#">
                       
                      Testing website
                     </a>
                   </li>
-				  
-				  <li>
+			        
+			        <li>
                     <a href="#">
                       
                      Live website
@@ -325,7 +326,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-     <ul class="sidebar-menu">
+      <ul class="sidebar-menu">
       
         <li class="active treeview">
           <a href="index.html">
@@ -389,78 +390,172 @@
     <!-- /.sidebar -->
   </aside>
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <span id="pageHeadingID">Add</span>
-        <small>URL</small>
+        <span id="pageHeadingID">Add</span> Upstream
+        <small>Block</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">URL</li>
+        <li class="active">Upstream</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-	 
+       
       <form class="form-horizontal" id="EntryForm">
-       		 <div class="row">
-           		  <div class=" col-sm-12 col-lg-8">
-             		<input id="uuid" name="uuid" type="hidden" value="">
+	 <div class="row">
+             <div class=" col-sm-12 col-lg-12">
+               <input type="hidden" class="form-control" name="uuid" id="uuid"/>
+               <input type="hidden" class="form-control" name="unique_prefix" id="unique_prefix" value="upstream"/>
+               <input type="hidden" class="form-control" name="unique_value" id="unique_value" value=""/>
+               <input type="hidden" class="form-control" name="server_details" id="server_details" value=""/>
   
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">URL<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="link" placeholder="URL" name="link" type="text">
+    <label for="" class="col-sm-2 control-label">Name<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="name" placeholder="Name" name="name" type="text">
     </div>
   </div>
   
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">Service<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="service" placeholder="Service" name="service" type="text">
-    </div>
-  </div>
-  <div class="form-group" id="oauthDiv" style="display:none;">
-    <label for="" class="col-sm-3 control-label">Oauth </label>
-    <div class="col-sm-8 ">
-       <input class="form-control" id="auth" disabled type="text">
+  	<label for="" class="col-sm-2 control-label"></label>
+    <label class="col-sm-4"><input name="keepalive" id="keepalive" value="1" type="checkbox"> Activates the cache for connections to upstream servers</label>
+    <label for="" class="col-sm-1 control-label connectionUI" style="display:none;">Connections</label>
+    <div class="col-sm-2 connectionUI" style="display:none;">
+       <input class="form-control" id="connections" placeholder="Connections" name="connections" type="text">
     </div>
   </div>
   
-  				<div class="col-sm-12 margin-top-15 " align="CENTER">
-                <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
-                </div>
-   </div>
-       			 
+	<div CLASS="ROW">
+    <div CLASS="col-md-12 itemsContent" STYLE="margin-left:13px;">
+      <span style="float:right; font-weight:bold;">
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hostDetailsModules" style="margin-bottom: 10px;">+ Add new host details</button>
+	</span>
+      </div>
+    </div>
+    
+  <div CLASS="row">
+    <div class="itemsContent col-md-12" id="itemsTable">
+      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Add new address</label>
+      <div >
+	<div CLASS="table-responsive">
+	  <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="sub_table">
+	    <thead>
+	      <tr class="item">
+		<th>Address</th>
+		<th>Server Type</th>
+		<th>Weight</th>
+		<th>Active connections</th>
+		<th>Max. no. of unsuccessful attempts</th>
+		<th>As backup server</th>
+		<th>As Permanently unavailable server</th>
+		<th colspan="2" align="center">Actions</th>
+		</tr>
+	      </thead>
+	    	<tbody id="subtable_items">
+	      
+	        </tbody>
+	    </table>
+	  </div>
+	
+	</div>
+      </div>
+    </div>
+ <div class="col-sm-12 margin-top-15 " align="CENTER">
+		<input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+	</div>
+</div>
+	      
              
-       		 </div>
+	      </div>
              
              </form>
    </section>
-   
-				
-		
-		
-		
-		
-        <!-- right col -->
+          <!-- right col -->
       </div>
       <!-- /.row (main row) -->
 
     </section>
-
+<div class="modal fade" id="hostDetailsModules" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal" onClick="resetSubContentForm()">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Describe Server details
+                </h4>
+            </div>
+	    
+	    <style>
+	      .form-group {
+	      margin-bottom: 15px;
+	      overflow: hidden;
+	      }
+	      </style>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+            	  <div class="form-group" id="hostMessageId">
+                    <label for="item_label"><strong>Server Type</strong><span class="f_req">*</span></label>
+                      <select class="form-control" id="item_server_type">
+                      	<option value="TCP">TCP</option><option value="UNIX-domain sockets">UNIX-domain sockets</option>
+                      </select>
+                      <input type="hidden" class="form-control" id="item_uuid"/>
+                  </div>
+              		<div class="form-group">
+                    	<label class="col-md-12" style="padding-left:0px"><strong>Address</strong><span class="f_req">*</span></label>
+                    	<div class="col-md-2 unix_ui" style="padding-left:0px;display:none;"><button class="form-control">unix:</button></div>
+                      	<div class="col-md-10" style="padding-right:0px;padding-left:0px;"><input class="form-control" id="item_address" placeholder="Enter address"/></div>
+                      	<span class="col-md-12" style="padding-left:0px;font-size:13px;font-style:italic;">Address can be specified as a domain name or IP address, with an optional port</span>
+                  	</div>
+                  
+                  <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Server Weight</strong></label>
+                     <input class="form-control" id="item_weight" value="1"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Maximum number of active connections</strong></label>
+                     <input class="form-control" id="item_max_conns" value="1"/>
+                  </div>
+                   <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Maximum number of unsuccessful attempts</strong></label>
+                     <input class="form-control" id="item_max_fails" value="1"/>
+                  </div>
+                  <div class="form-group">
+                    <label><strong><input  id="item_backup" value="1" type="checkbox">&nbsp;Mark this server as backup server</strong></label>
+                  </div>
+                  <div class="form-group">
+                    <label><strong><input  id="item_down" value="1" type="checkbox">&nbsp;Mark this server as permanently unavailable</strong></label>
+                  </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetSubContentForm()">
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary" onClick="createSubContentFormRow()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+   </div>
+ 
   </div>
-  <footer class="main-footer">
-    
-    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights
-    reserved.
-  </footer>
-  
+	<footer class="main-footer">
+	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
+  	</footer>
 </div>
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -483,78 +578,223 @@ function getUrlVars() {
     });
     return vars;
 }
-
-    $(document).ready(function() {
-		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
-			$("#uuid").val(getUrlVars()["token"]);
-			$.getJSON("https://dev.synergist.cloud/api_get_key?key=url:"+getUrlVars()["token"],function(result){
-				if(result.success && result.aaData && result.aaData.length>0){
-					$("#pageHeadingID").html("Edit");
-					var aaDataStr= result.aaData;
-					var aaDataObj = JSON.parse(aaDataStr);
-					if(aaDataObj.link && aaDataObj.link!="")	{
-						$("#link").val(aaDataObj.link);
+function remove_sub_item(e){
+	if(e!=""){
+		$(".parameterstr_"+e).closest('tr').remove();
+	}
+}
+function edit_sub_item(e){
+	if(e!=""){
+		var row= $(".parameterstr_"+e).closest('tr');
+		$("#item_uuid").val(e);
+		var addressStr= row.find('#address').val();
+		$("#item_server_type").val(row.find('#server_type').val());
+		if(row.find('#server_type').val()!="" && row.find('#server_type').val()!="TCP"){
+			addressStr= addressStr.replace("unix:", "");
+			$(".unix_ui").show();
+		}
+		
+		$("#item_address").val(addressStr);
+		$("#item_weight").val(row.find('#weight').val());
+		$("#item_max_conns").val(row.find('#max_conns').val());
+		if(row.find('#backup').val()==1){
+			$("#item_backup").prop('checked', true);
+		}
+		if(row.find('#down').val()==1){
+			$("#item_down").prop('checked', true);
+		}
+		$("#item_max_fails").val(row.find('#max_fails').val());
+		$('#hostDetailsModules').modal('show'); 
+	}
+}
+function createSubContentFormRow(){
+	$("#subFormMsgSpan").remove();
+	if($('#item_address').val()!=""){
+		var uuidStr=$("#item_uuid").val();
+		if(uuidStr==""){
+			uuidStr = guid();
+		}
+		var addressValStr= $('#item_address').val();
+		if($('#item_server_type').val() !="TCP"){
+			addressValStr= "unix:"+$('#item_address').val();
+		}
+		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='address' value='"+addressValStr+"'>"+addressValStr+"</td>";
+		contentStr+="<td><input type='hidden' id='server_type' value='"+$('#item_server_type').val()+"'>"+$('#item_server_type').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='weight' value='"+$('#item_weight').val()+"'>"+$('#item_weight').val()+"</td><td><input type='hidden' id='max_conns' value='"+$('#item_max_conns').val()+"'>"+$('#item_max_conns').val()+"</td><td><input type='hidden' id='max_fails' value='"+$('#item_max_fails').val()+"'>"+$('#item_max_fails').val()+"</td>";
+		var as_backup_server=0;
+		if($('#item_backup').is(":checked")){
+			as_backup_server=1;
+		}
+		contentStr+="<td><input type='hidden' id='backup' value='"+as_backup_server+"'>"+as_backup_server+"</td>";
+		var as_down_server=0;
+		if($('#item_down').is(":checked")){
+			as_down_server=1;
+		}
+		contentStr+="<td><input type='hidden' id='down' value='"+as_down_server+"'>"+as_down_server+"</td>";
+		
+		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_sub_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_sub_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+		if($("#item_uuid").val()!=""){
+			$(".parameterstr_"+uuidStr).html(contentStr);
+		}else{
+			$("#subtable_items").append("<tr class='parametersItemClass parameterstr_"+uuidStr+"'>"+contentStr+"</tr>");
+		}
+		$('#sub_table').basictable('destroy');
+		$('#sub_table').basictable({
+			breakpoint: 751
+		});
+		$('#hostDetailsModules').modal('hide');
+		resetSubContentForm();
+	} else{ 
+		$("#hostMessageId").before('<span id="subFormMsgSpan" style="color:#CC0000;">Please add all the required fields!</span>');
+	}
+}
+function resetSubContentForm(){
+	$(".unix_ui").hide();
+	$("#subFormMsgSpan").remove();
+	$("#item_uuid").val('');
+	$("#item_address").val('');
+	$("#item_server_type").val('TCP');
+	$("#item_weight").val(1);
+	$("#item_max_conns").val(1);
+	$('#item_max_fails').val(1);
+	$("#item_backup").prop("checked", false);
+	$("#item_down").prop("checked", false);
+}
+function generateServerObjectJson(){
+	var createArr=new Array();
+	var i=0;
+	$('.parametersItemClass').each(function(){
+		var createObject={};
+		createObject['uuid']=$(this).find('#uuid').val();
+		createObject['address']=$(this).find('#address').val();
+		createObject['server_type']=$(this).find('#server_type').val();
+		createObject['weight']=$(this).find('#weight').val();
+		createObject['max_conns']=$(this).find('#max_conns').val();
+		createObject['max_fails']=$(this).find('#max_fails').val();
+		createObject['backup']=$(this).find('#backup').val();
+		createObject['down']=$(this).find('#down').val();
+		createArr[i]=createObject;
+		i++;
+	});
+	$("#server_details").val(JSON.stringify(createArr));
+}
+$(document).ready(function() {
+	$('#sub_table').basictable({
+			breakpoint: 751
+		});
+	
+	$("#item_server_type").change(function(){
+		if($(this).val()!="TCP"){
+			$(".unix_ui").show();
+		} else {
+			$(".unix_ui").hide();
+		}
+	});
+	
+	$("#keepalive").click(function(){
+		if ($(this).is(":checked")) {
+        	$(".connectionUI").show();
+    	} else {
+        	$(".connectionUI").hide();
+    	}
+	});
+	
+	if(getUrlVars() && getUrlVars()["name"]  && getUrlVars()["name"]!="") {
+		$("#name").val(getUrlVars()["name"]);
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=upstream:"+getUrlVars()["name"],function(result){
+			if(result.success && result.aaData && result.aaData.length>0){
+				$("#pageHeadingID").html("Edit");
+				var aaDataStr= result.aaData;
+				var aaDataObj = JSON.parse(aaDataStr);
+				$.each(aaDataObj, function(key,value){
+					$("#"+key).val(value);
+					if(key=="server_details"){
+						var contentStr='';
+						$.each(JSON.parse(value), function(i,row){
+							var uuidStr=guid();
+							if(row.uuid && row.uuid!=""){
+								uuidStr= row.uuid;
+							}
+							contentStr+="<tr class='parametersItemClass parameterstr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='address' value='"+row.address+"'>"+row.address+"</td>";
+    						contentStr+="<td><input type='hidden' id='server_type' value='"+row.server_type+"'>"+row.server_type+"</td>";
+    						contentStr+="<td><input type='hidden' id='weight' value='"+row.weight+"'>"+row.weight+"</td>";
+    						contentStr+="<td><input type='hidden' id='max_conns' value='"+row.max_conns+"'>"+row.max_conns+"</td>";
+    						contentStr+="<td><input type='hidden' id='max_fails' value='"+row.max_fails+"'>"+row.max_fails+"</td>";
+							contentStr+="<td><input type='hidden' id='backup' value='"+row.backup+"'>"+row.backup+"</td><td><input type='hidden' id='down' value='"+row.down+"'>"+row.down+"</td>";
+    						contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_sub_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_sub_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+						});
+						$("#subtable_items").html(contentStr);
 					}
-					if(aaDataObj.service && aaDataObj.service!="")	{
-						$("#service").val(aaDataObj.service);
+					if(key=="keepalive"){
+						$("#keepalive").prop("checked", true);
+						$(".connectionUI").show();
 					}
-					if(aaDataObj.oauth && aaDataObj.oauth!="")	{
-						$("#auth").val(aaDataObj.oauth);
-						$("#oauthDiv").show();
+				});
+			}
+		});
+	}
+	function dataAsJson(name){
+		var x = $("#"+name).serializeArray();
+		var outputObj = new Object();
+    	$.each(x, function(i, field){
+    		if(field.value!=""){
+    			outputObj[field.name]   = field.value;
+    		}
+     	});
+    	return outputObj;
+    }
+    $("#EntryForm").validate({
+		ignore: "",
+		onkeyup: false,
+		errorClass: 'error',
+		validClass: 'valid',
+		errorElement: "em",
+		errorPlacement: function(error, element) {
+			$(element).closest('div').append(error);
+		},
+		onfocusout: false,
+		invalidHandler: function(form, validator) {
+			var errors = validator.numberOfInvalids();
+			if (errors) {                    
+				validator.errorList[0].element.focus();
+			}
+		},
+		rules: {
+			name: { required: true }
+		},
+		submitHandler: function(form) {
+			generateServerObjectJson();
+			
+			var tokenStr=$("#uuid").val();
+			if(tokenStr=="") {
+				var tokenStr=guid();
+				$("#uuid").val(tokenStr);
+			}
+			$("#unique_value").val($("#name").val());
+			var entry_form_data_obj = dataAsJson("EntryForm");
+			
+			$.ajax({
+				url: 'https://dev.synergist.cloud/api_post_key',
+				type: 'POST',
+				data: entry_form_data_obj,
+				contentType: false,
+				dataType: 'json',
+				success: function(response){
+					if(response.success){
+						window.location.href = "/upstream.html?name="+$("#unique_value").val()+"&"+Math.random();
+					} else if(response.error) {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+					}else {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
 					}
 				}
 			});
 		}
-      $("#EntryForm").validate({
-			ignore: "",
-			onkeyup: false,
-			errorClass: 'error',
-			validClass: 'valid',
-			errorElement: "em",
-			errorPlacement: function(error, element) {
-				$(element).closest('div').append(error);
-			},
-			onfocusout: false,
-			invalidHandler: function(form, validator) {
-				var errors = validator.numberOfInvalids();
-				if (errors) {                    
-					validator.errorList[0].element.focus();
-				}
-			},
-			rules: {
-				link: { required: true },
-				service: { required: true }
-			},
-			submitHandler: function(form) {
-				var tokenStr=$("#uuid").val();
-				if(tokenStr=="") {
-					var tokenStr=guid();
-				}
-							$.ajax({
-url: 'https://dev.synergist.cloud/api_post_key',
-type: 'POST',
-data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
-contentType: false,
-dataType: 'json',
-success: function(response){
-									if(response.success){
-										window.location.href = "/url_form.html?token="+tokenStr;
-									} else if(response.error) {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
-									}else {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
-									}
-								}
-							});
- 			}
-		});		
+	});
 
-      
-    });
-  </script>
-
-  <script src="js/basictable.js"></script>
+});
+</script>
+<script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
 </body>
 </html>

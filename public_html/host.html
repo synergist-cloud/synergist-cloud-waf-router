@@ -19,9 +19,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
  <!-- Theme style -->
  <link rel="stylesheet" href="css/Admin.min.css">
+   <link rel="stylesheet" href="css/basictable.css">
  <link rel="stylesheet" href="css/skins/_all-skins.min.css">
  </head>
- <body class="hold-transition skin-blue sidebar-mini">	
+<body class="hold-transition skin-blue sidebar-mini">
  <div class="wrapper">
  
 
@@ -169,8 +170,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="header">Switch Site to</li>
-			  
-			   <li STYLE="padding:15px;" >
+	        
+	         <li STYLE="padding:15px;" >
                   
                       <input TYPE="text" CLASS="form-control"  STYLE="height:34px; border-radius:4px; border: 1px solid #ddd;">
                     
@@ -187,59 +188,59 @@
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  <li>
+		    
+		    
+		    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		      
+		      
+		      
+		      <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		        
+		        
+		        
+		        <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+			  
+			  
+			  
+			  <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  
-				  <li>
+			    
+			    
+			    
+			    
+			    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  <li>
+			      <li>
                     <a href="#">
                       
                      Testing website
                     </a>
                   </li>
-				  
-				  <li>
+			        
+			        <li>
                     <a href="#">
                       
                      Live website
@@ -325,7 +326,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-     <ul class="sidebar-menu">
+      <ul class="sidebar-menu">
       
         <li class="active treeview">
           <a href="index.html">
@@ -389,78 +390,91 @@
     <!-- /.sidebar -->
   </aside>
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         <span id="pageHeadingID">Add</span>
-        <small>URL</small>
+        <small>Server</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">URL</li>
+        <li class="active">Server</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-	 
+       
       <form class="form-horizontal" id="EntryForm">
-       		 <div class="row">
-           		  <div class=" col-sm-12 col-lg-8">
-             		<input id="uuid" name="uuid" type="hidden" value="">
-  
+	 <div class="row">
+             <div class=" col-sm-12 col-lg-12">
+               <input type="hidden" class="form-control" id="rules"/>
+               <input type="hidden" class="form-control" id="uuid"/><input type="hidden" class="form-control" id="unique_prefix" value="host"/>
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">URL<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="link" placeholder="URL" name="link" type="text">
+    <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
+    <div class="col-sm-6">
+       <input class="form-control required" id="host_name" name="host_name" type="text"><span STYLE="font-size:12px; color:#737373;">Unique value</span>
     </div>
-  </div>
-  
+    </div>
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">Service<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="service" placeholder="Service" name="service" type="text">
+    <label for="" class="col-sm-1 control-label">IP Address</label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="ip_address" name="ip_address" type="text">
+    </div>
+    <label for="" class="col-sm-1 control-label">Port</label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="port" name="port" type="text">
     </div>
   </div>
-  <div class="form-group" id="oauthDiv" style="display:none;">
-    <label for="" class="col-sm-3 control-label">Oauth </label>
-    <div class="col-sm-8 ">
-       <input class="form-control" id="auth" disabled type="text">
+  <div class="form-group">
+    <label for="" class="col-sm-1 control-label">Root Path<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="root_path" name="root_path" type="text">
     </div>
+  	<label for="" class="col-sm-1 control-label"></label>
+    
+    <label><input name="redirect_to_https" id="redirect_to_https" value="1" type="checkbox">&nbsp;<strong>Redirect to HTTPS</strong></label>
   </div>
+  <div class="form-group">
+    <label for="" class="col-sm-1 control-label">SSL Certificate Path</label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="ssl_certificate_path" placeholder="SSL Certificate Path" name="ssl_certificate_path" type="text">
+    </div>
   
+    <label for="" class="col-sm-1 control-label">SSL Certificate Key Path</label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="ssl_certificate_key_path" placeholder="SSL Certificate Key Path" name="ssl_certificate_key_path" type="text">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-sm-1 control-label">Access Log Path</label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="access_log_path" name="access_log_path" type="text">
+    </div>
+  
+    <label for="" class="col-sm-1 control-label">Error Log Path</label>
+    <div class="col-sm-5 ">
+       <input class="form-control" id="error_log_path" name="error_log_path" type="text">
+    </div>
+  </div>
   				<div class="col-sm-12 margin-top-15 " align="CENTER">
                 <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
                 </div>
    </div>
-       			 
+	      
              
-       		 </div>
+	      </div>
              
              </form>
    </section>
-   
-				
-		
-		
-		
-		
         <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-
+      
   </div>
-  <footer class="main-footer">
-    
-    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights
-    reserved.
-  </footer>
-  
+	<footer class="main-footer">
+	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
+  	</footer>
 </div>
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -484,77 +498,53 @@ function getUrlVars() {
     return vars;
 }
 
-    $(document).ready(function() {
-		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
-			$("#uuid").val(getUrlVars()["token"]);
-			$.getJSON("https://dev.synergist.cloud/api_get_key?key=url:"+getUrlVars()["token"],function(result){
-				if(result.success && result.aaData && result.aaData.length>0){
-					$("#pageHeadingID").html("Edit");
-					var aaDataStr= result.aaData;
-					var aaDataObj = JSON.parse(aaDataStr);
-					if(aaDataObj.link && aaDataObj.link!="")	{
-						$("#link").val(aaDataObj.link);
-					}
-					if(aaDataObj.service && aaDataObj.service!="")	{
-						$("#service").val(aaDataObj.service);
-					}
-					if(aaDataObj.oauth && aaDataObj.oauth!="")	{
-						$("#auth").val(aaDataObj.oauth);
-						$("#oauthDiv").show();
-					}
-				}
+$(document).ready(function() {
+	$(".host_details_class").show();
+	if(getUrlVars() && getUrlVars()["host"]  && getUrlVars()["host"]!="") {
+		$("#name").val(getUrlVars()["host"]);
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=host:"+getUrlVars()["host"],function(result){
+			if(result.success && result.aaData && result.aaData.length>0){
+				$("#pageHeadingID").html("Edit");
+				var aaDataStr= result.aaData;
+				var aaDataObj = JSON.parse(aaDataStr);
+				console.log(aaDataObj)
+			}
+			$('#rules_table').basictable({
+				breakpoint: 751
 			});
+			$('#hosts_table').basictable({
+				breakpoint: 751
+			});
+		});
+	}
+    $("#EntryForm").validate({
+		ignore: "",
+		onkeyup: false,
+		errorClass: 'error',
+		validClass: 'valid',
+		errorElement: "em",
+		errorPlacement: function(error, element) {
+			$(element).closest('div').append(error);
+		},
+		onfocusout: false,
+		invalidHandler: function(form, validator) {
+			var errors = validator.numberOfInvalids();
+			if (errors) {                    
+				validator.errorList[0].element.focus();
+			}
+		},
+		rules: {
+			name: { required: true },
+			root_path: { required: true }
+		},
+		submitHandler: function(form) {
+			alert("Work in progress");
 		}
-      $("#EntryForm").validate({
-			ignore: "",
-			onkeyup: false,
-			errorClass: 'error',
-			validClass: 'valid',
-			errorElement: "em",
-			errorPlacement: function(error, element) {
-				$(element).closest('div').append(error);
-			},
-			onfocusout: false,
-			invalidHandler: function(form, validator) {
-				var errors = validator.numberOfInvalids();
-				if (errors) {                    
-					validator.errorList[0].element.focus();
-				}
-			},
-			rules: {
-				link: { required: true },
-				service: { required: true }
-			},
-			submitHandler: function(form) {
-				var tokenStr=$("#uuid").val();
-				if(tokenStr=="") {
-					var tokenStr=guid();
-				}
-							$.ajax({
-url: 'https://dev.synergist.cloud/api_post_key',
-type: 'POST',
-data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
-contentType: false,
-dataType: 'json',
-success: function(response){
-									if(response.success){
-										window.location.href = "/url_form.html?token="+tokenStr;
-									} else if(response.error) {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
-									}else {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
-									}
-								}
-							});
- 			}
-		});		
+	});
 
-      
-    });
-  </script>
-
-  <script src="js/basictable.js"></script>
+});
+</script>
+<script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
 </body>
 </html>

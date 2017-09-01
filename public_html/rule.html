@@ -19,9 +19,10 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
  <!-- Theme style -->
  <link rel="stylesheet" href="css/Admin.min.css">
+   <link rel="stylesheet" href="css/basictable.css">
  <link rel="stylesheet" href="css/skins/_all-skins.min.css">
  </head>
- <body class="hold-transition skin-blue sidebar-mini">	
+<body class="hold-transition skin-blue sidebar-mini">
  <div class="wrapper">
  
 
@@ -169,8 +170,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="header">Switch Site to</li>
-			  
-			   <li STYLE="padding:15px;" >
+	        
+	         <li STYLE="padding:15px;" >
                   
                       <input TYPE="text" CLASS="form-control"  STYLE="height:34px; border-radius:4px; border: 1px solid #ddd;">
                     
@@ -187,59 +188,59 @@
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  <li>
+		    
+		    
+		    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		      
+		      
+		      
+		      <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+		        
+		        
+		        
+		        <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  <li>
+			  
+			  
+			  
+			  <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  
-				  
-				  
-				  
-				  <li>
+			    
+			    
+			    
+			    
+			    <li>
                     <a href="#">
                       
                       Demo website
                     </a>
                   </li>
-				  <li>
+			      <li>
                     <a href="#">
                       
                      Testing website
                     </a>
                   </li>
-				  
-				  <li>
+			        
+			        <li>
                     <a href="#">
                       
                      Live website
@@ -325,7 +326,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-     <ul class="sidebar-menu">
+      <ul class="sidebar-menu">
       
         <li class="active treeview">
           <a href="index.html">
@@ -389,78 +390,133 @@
     <!-- /.sidebar -->
   </aside>
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         <span id="pageHeadingID">Add</span>
-        <small>URL</small>
+        <small>Rule</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">URL</li>
+        <li class="active">Rule</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-	 
+       
       <form class="form-horizontal" id="EntryForm">
-       		 <div class="row">
-           		  <div class=" col-sm-12 col-lg-8">
-             		<input id="uuid" name="uuid" type="hidden" value="">
-  
+	 <div class="row">
+             <div class=" col-sm-12 col-lg-12">
+               <input type="hidden" class="form-control" name="uuid" id="uuid"/>
+               <input type="hidden" class="form-control" name="unique_prefix" id="unique_prefix" value="rule"/>
+               <input type="hidden" class="form-control" name="unique_value" id="unique_value" value=""/>
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">URL<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="link" placeholder="URL" name="link" type="text">
+    <label for="" class="col-sm-2 control-label">Type<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <select class="form-control required" id="rule_type" name="rule_type">
+       	<option value="">--Select--</option>
+       	<option value="static_content">Serving Static Content</option>
+       	<option value="proxy_pass">Proxy Pass</option>
+       	<option value="fastcgi_proxy">FastCGI Proxy</option>
+       	<option value="rewrite">Rewrite</option>
+       </select>
     </div>
-  </div>
-  
+    </div>
   <div class="form-group">
-    <label for="" class="col-sm-3 control-label">Service<sup class="required">*</sup></label>
-    <div class="col-sm-8 ">
-       <input class="form-control required" id="service" placeholder="Service" name="service" type="text">
+    <label for="" class="col-sm-2 control-label">Location/condition<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="location" placeholder="Location" name="location" type="text">
     </div>
   </div>
-  <div class="form-group" id="oauthDiv" style="display:none;">
-    <label for="" class="col-sm-3 control-label">Oauth </label>
-    <div class="col-sm-8 ">
-       <input class="form-control" id="auth" disabled type="text">
+  <div class="form-group rule_defined_ui static_content" style="display:none;">
+    <label for="" class="col-sm-2 control-label">Root Path</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="root_path" name="root_path" type="text">
     </div>
   </div>
-  
-  				<div class="col-sm-12 margin-top-15 " align="CENTER">
-                <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
-                </div>
-   </div>
-       			 
+
+	<div class="form-group rule_defined_ui rewrite" style="display:none;">
+    <label for="" class="col-sm-2 control-label">Regular Expression (reg-ex)</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="rewrite_regex" name="rewrite_regex" type="text">
+    </div>
+  </div>
+  <div class="form-group rule_defined_ui rewrite" style="display:none;">
+    <label for="" class="col-sm-2 control-label">Replacement String</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="rewrite_replacement_str" name="rewrite_replacement_str" type="text">
+       <span STYLE="font-size:12px; color:#737373;">If the reqeust URI matches the reg-ex, then Nginx will use this replacement string to change the request URI accordingly</span>
+    </div>
+  </div>
+  <div class="form-group rule_defined_ui rewrite" style="display:none;">
+    <label for="" class="col-sm-2 control-label">Flag</label>
+    <div class="col-sm-6 ">
+       <select class="form-control" id="rewrite_flag" name="rewrite_flag">
+       	<option value="">--Select--</option>
+       	<option value="last">Last</option>
+       	<option value="break">Stop Processing</option>
+       	<option value="redirect">Temporary Redirect</option>
+       	<option value="permanent">Permanently Redirect</option>
+       </select>
+    </div>
+  </div>
+  <div class="form-group rule_defined_ui proxy_pass" style="display:none;">
+    <label for="" class="col-sm-2 control-label">Proxy Pass</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="proxy_pass" name="proxy_pass" type="text">
+    </div>
+  </div>
+	<div class="form-group rule_defined_ui proxy_pass static_content" style="display:none;">
+		<label for="" class="col-sm-2 control-label"></label>
+    	<div class="col-sm-3">
+       		<label><input id="enable_cache" name="enable_cache" type="checkbox" value="1"> Enable Cache</label>
+    	</div>
+    	<div class="col-sm-6 ">
+       		<label><input id="proxy_set_header" name="proxy_set_header" type="checkbox" value="1"> Set Proxy Header</label>
+    	</div>
+  	</div>
+	<div class="form-group rule_defined_ui fastcgi_proxy" style="display:none;">
+    	<label for="" class="col-sm-2 control-label">FastCGI Index</label>
+    	<div class="col-sm-6 ">
+       		<input class="form-control" id="fastcgi_index" name="fastcgi_index" type="text">
+    	</div>
+  	</div>
+  	<div class="form-group rule_defined_ui fastcgi_proxy" style="display:none;">
+    	<label for="" class="col-sm-2 control-label">FastCGI Pass</label>
+    	<div class="col-sm-6 ">
+       		<input class="form-control" id="fastcgi_pass" name="fastcgi_pass" type="text">
+    	</div>
+  	</div>
+  	<div class="form-group rule_defined_ui fastcgi_proxy" style="display:none;">
+    	<label for="" class="col-sm-2 control-label">Set Parameters for FastCGI</label>
+    	<div class="col-sm-6 ">
+       		<input class="form-control" id="fastcgi_param" name="fastcgi_param" type="text">
+    	</div>
+  	</div>
+  	
+  	<div class="col-sm-12 margin-top-15 " align="CENTER">
+		<input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+	</div>
+</div>
+	      
              
-       		 </div>
+	      </div>
              
              </form>
    </section>
-   
-				
-		
-		
-		
-		
-        <!-- right col -->
+          <!-- right col -->
       </div>
       <!-- /.row (main row) -->
 
     </section>
 
   </div>
-  <footer class="main-footer">
-    
-    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights
-    reserved.
-  </footer>
-  
+	<footer class="main-footer">
+	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
+  	</footer>
 </div>
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
@@ -484,77 +540,98 @@ function getUrlVars() {
     return vars;
 }
 
-    $(document).ready(function() {
-		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
-			$("#uuid").val(getUrlVars()["token"]);
-			$.getJSON("https://dev.synergist.cloud/api_get_key?key=url:"+getUrlVars()["token"],function(result){
-				if(result.success && result.aaData && result.aaData.length>0){
-					$("#pageHeadingID").html("Edit");
-					var aaDataStr= result.aaData;
-					var aaDataObj = JSON.parse(aaDataStr);
-					if(aaDataObj.link && aaDataObj.link!="")	{
-						$("#link").val(aaDataObj.link);
+$(document).ready(function() {
+	$("#rule_type").change(function(){
+		$(".rule_defined_ui").hide();
+		var s_val= $(this).val();
+		if(s_val!=""){
+			$("."+s_val).show();
+		}
+	});
+	
+	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
+		$("#uuid").val(getUrlVars()["id"]);
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=rule:"+getUrlVars()["id"],function(result){
+			if(result.success && result.aaData && result.aaData.length>0){
+				$("#pageHeadingID").html("Edit");
+				var aaDataStr= result.aaData;
+				var aaDataObj = JSON.parse(aaDataStr);
+				$.each(aaDataObj, function(key,value){
+					$("#"+key).val(value);
+					if(key=="rule_type"){
+						$("#rule_type").trigger("change");
 					}
-					if(aaDataObj.service && aaDataObj.service!="")	{
-						$("#service").val(aaDataObj.service);
+					if(key=="enable_cache"){
+						$("#enable_cache").prop("checked", true);
 					}
-					if(aaDataObj.oauth && aaDataObj.oauth!="")	{
-						$("#auth").val(aaDataObj.oauth);
-						$("#oauthDiv").show();
+					if(key=="proxy_set_header"){
+						$("#proxy_set_header").prop("checked", true);
+					}
+				});
+			}
+		});
+	}
+	function dataAsJson(name){
+		var x = $("#"+name).serializeArray();
+		var outputObj = new Object();
+    	$.each(x, function(i, field){
+    		if(field.value!=""){
+    			outputObj[field.name]   = field.value;
+    		}
+     	});
+    	return outputObj;
+    }
+    $("#EntryForm").validate({
+		ignore: "",
+		onkeyup: false,
+		errorClass: 'error',
+		validClass: 'valid',
+		errorElement: "em",
+		errorPlacement: function(error, element) {
+			$(element).closest('div').append(error);
+		},
+		onfocusout: false,
+		invalidHandler: function(form, validator) {
+			var errors = validator.numberOfInvalids();
+			if (errors) {                    
+				validator.errorList[0].element.focus();
+			}
+		},
+		rules: {
+			rule_type: { required: true },
+			location : { required: true }
+		},
+		submitHandler: function(form) {
+			var tokenStr=$("#uuid").val();
+			if(tokenStr=="") {
+				var tokenStr=guid();
+				$("#uuid").val(tokenStr);
+			}
+			$("#unique_value").val(tokenStr);
+			var entry_form_data_obj = dataAsJson("EntryForm");
+			
+			$.ajax({
+				url: 'https://dev.synergist.cloud/api_post_key',
+				type: 'POST',
+				data: entry_form_data_obj,
+				contentType: false,
+				dataType: 'json',
+				success: function(response){
+					if(response.success){
+						window.location.href = "/rule.html?id="+tokenStr+"&"+Math.random();
+					} else if(response.error) {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+					}else {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
 					}
 				}
 			});
 		}
-      $("#EntryForm").validate({
-			ignore: "",
-			onkeyup: false,
-			errorClass: 'error',
-			validClass: 'valid',
-			errorElement: "em",
-			errorPlacement: function(error, element) {
-				$(element).closest('div').append(error);
-			},
-			onfocusout: false,
-			invalidHandler: function(form, validator) {
-				var errors = validator.numberOfInvalids();
-				if (errors) {                    
-					validator.errorList[0].element.focus();
-				}
-			},
-			rules: {
-				link: { required: true },
-				service: { required: true }
-			},
-			submitHandler: function(form) {
-				var tokenStr=$("#uuid").val();
-				if(tokenStr=="") {
-					var tokenStr=guid();
-				}
-							$.ajax({
-url: 'https://dev.synergist.cloud/api_post_key',
-type: 'POST',
-data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
-contentType: false,
-dataType: 'json',
-success: function(response){
-									if(response.success){
-										window.location.href = "/url_form.html?token="+tokenStr;
-									} else if(response.error) {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
-									}else {
-										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
-									}
-								}
-							});
- 			}
-		});		
+	});
 
-      
-    });
-  </script>
-
-  <script src="js/basictable.js"></script>
+});
+</script>
+<script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
 </body>
 </html>

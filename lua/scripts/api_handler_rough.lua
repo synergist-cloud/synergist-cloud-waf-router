@@ -38,8 +38,8 @@ init_by_lua '
       return(outputData)
    end
 
-   function del_key(db, key)                                                       
-   		local outputData = {}
+   function del_key(db, key)
+       local outputData = {}
        local res, err = db:del(key)
        if not res then
           outputData["error"] = "Failed to delete "..key..": "..err
@@ -133,6 +133,7 @@ server {
                     ngx.say(cjson.encode(outputData))
                     return
                end
+		unique_str = unique_prefix..":"..unique_str
 			local res = set_key(db, unique_str, cjson.encode(inputContentStr))
                         ngx.say(cjson.encode(res))
 
@@ -394,6 +395,7 @@ server {
 			      l = l + 1
 			end
 		   end
+
 		   outputData["success"] = "OK"
 		   ngx.say(cjson.encode(outputData))
 
