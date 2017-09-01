@@ -410,8 +410,8 @@
       <form class="form-horizontal" id="EntryForm">
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
-               <input type="hidden" class="form-control" id="rules"/>
-               <input type="hidden" class="form-control" id="uuid"/><input type="hidden" class="form-control" id="unique_prefix" value="host"/>
+               <input type="hidden" class="form-control" id="rules" name="rules"/>
+               <input type="hidden" class="form-control" id="uuid" name="uuid"/><input type="hidden" class="form-control" id="unique_prefix" name="unique_prefix" value="host"/><input type="hidden" class="form-control" id="unique_value" name="unique_value"/>
   <div class="form-group">
     <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
     <div class="col-sm-6">
@@ -497,7 +497,16 @@ function getUrlVars() {
     });
     return vars;
 }
-
+function dataAsJson(name){
+		var x = $("#"+name).serializeArray();
+		var outputObj = new Object();
+    	$.each(x, function(i, field){
+    		if(field.value!=""){
+    			outputObj[field.name]   = field.value;
+    		}
+     	});
+    	return outputObj;
+    }
 $(document).ready(function() {
 	$(".host_details_class").show();
 	if(getUrlVars() && getUrlVars()["host"]  && getUrlVars()["host"]!="") {
@@ -507,14 +516,13 @@ $(document).ready(function() {
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
 				var aaDataObj = JSON.parse(aaDataStr);
-				console.log(aaDataObj)
+				$.each(aaDataObj, function(key,value){
+					$("#"+key).val(value);
+					if(key=="redirect_to_https"){
+						$("#redirect_to_https").prop("checked", true);
+					}
+				});
 			}
-			$('#rules_table').basictable({
-				breakpoint: 751
-			});
-			$('#hosts_table').basictable({
-				breakpoint: 751
-			});
 		});
 	}
     $("#EntryForm").validate({
@@ -538,7 +546,31 @@ $(document).ready(function() {
 			root_path: { required: true }
 		},
 		submitHandler: function(form) {
-			alert("Work in progress");
+			//alert("Work in progress");
+			var tokenStr=$("#uuid").val();
+			if(tokenStr=="") {
+				var tokenStr=guid();
+				$("#uuid").val(tokenStr);
+			}
+			$("#unique_value").val($("#host_name").val());
+			var entry_form_data_obj = dataAsJson("EntryForm");
+			
+			$.ajax({
+				url: 'https://dev.synergist.cloud/api_post_key',
+				type: 'POST',
+				data: entry_form_data_obj,
+				contentType: false,
+				dataType: 'json',
+				success: function(response){
+					if(response.success){
+						window.location.href = "/host.html?host="+$("#unique_value").val()+"&"+Math.random();
+					} else if(response.error) {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+					}else {
+						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
+					}
+				}
+			});
 		}
 	});
 
