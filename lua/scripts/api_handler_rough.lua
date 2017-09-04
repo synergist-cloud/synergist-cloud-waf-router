@@ -95,11 +95,9 @@ server {
 
     location /api_post_key {
        content_by_lua_block {
-           local inputContentStr= {}
            local outputData = {}
-           local unique_str = ""
-           local unique_prefix = ""
-
+           local key_str = ""
+	   local value_str = ""
 	      ngx.req.read_body()
               local args, err = ngx.req.get_post_args()
               if not args then
@@ -107,23 +105,17 @@ server {
               	 ngx.say(cjson.encode(outputData))
              	 return
               end
+	      for key, val in pairs(args) do
+		if key == "key" then
+		   key_str = val
+		elseif key == "value" then
+		       value_str = val
+                end
+              end
 
-           for key, val in pairs(args) do
-             if type(val) == "table" then
-             	inputContentStr[key] = table.concat(val, ", ")
-             else
-		if key == "unique_value" then
-		   unique_str= val
-		elseif key == "unique_prefix" then
-		   unique_prefix = val
-		else
-		   inputContentStr[key] = val
-		end
-             end
-           end
-
-	   if( unique_str ~= "" and unique_prefix ~= "" )
+	   if( key_str ~= "" and value_str ~= "" )
 	   then
+	       local inputContentStr = cjson.decode(value_str)
 	       local timeLocalNow = os.time(os.date('*t'))
 	       inputContentStr["modified"] = timeLocalNow
 	       
@@ -133,8 +125,8 @@ server {
                     ngx.say(cjson.encode(outputData))
                     return
                end
-		unique_str = unique_prefix..":"..unique_str
-			local res = set_key(db, unique_str, cjson.encode(inputContentStr))
+
+			local res = set_key(db, key_str, cjson.encode(inputContentStr))
                         ngx.say(cjson.encode(res))
 
                         -- or just close the connection right away:
@@ -149,25 +141,21 @@ server {
     }
 	location /api_set_key {
             content_by_lua_block {
-	    	local inputContentStr= {}
 		local outputData = {}
-
-		local unique_str = ngx.var.arg_unique_value or ""
-		local unique_prefix = ngx.var.arg_unique_prefix or ""
-		if( unique_str ~= "" and unique_prefix ~= "" )
+		local key_str = ""
+		local value_str = ""
+		local args = ngx.req.get_uri_args()
+		for key, val in pairs(args) do
+		    if key == "key" then
+		       key_str= val
+		    elseif key == "value" then
+		       value_str = val
+		    end
+		end
+		if( key_str ~= "" and value_str ~= "" )
                 then
-			local args = ngx.req.get_uri_args()
-			unique_str = unique_prefix..":"..unique_str
-
-			for key, val in pairs(args) do
-		    	    if type(val) == "table" then
-                   	     --ngx.say(key, ": ", table.concat(val, ", "))
-			    else
-				inputContentStr[key] = val
-		    	    end
-         	       end
-		      --ngx.say(""..cjson.encode(inputContentStr))
-		      local timeLocalNow = os.time(os.date('*t'))
+		    local inputContentStr = cjson.decode(value_str)
+		    local timeLocalNow = os.time(os.date('*t'))
 
 			inputContentStr["modified"] = timeLocalNow
 			
@@ -178,7 +166,7 @@ server {
                             return
                         end
 			
-			local res = set_key(db, unique_str, cjson.encode(inputContentStr))
+			local res = set_key(db, key_str, cjson.encode(inputContentStr))
                         ngx.say(cjson.encode(res))
 
 			-- or just close the connection right away:
@@ -325,22 +313,22 @@ server {
         }
 	location /api_set_site {
             content_by_lua_block {
-	    	local inputContentStr= {}
 		local outputData = {}
-		local unique_str = ngx.var.arg_code or ""
+		local key_str = ""
+                local value_str = ""
+                local args = ngx.req.get_uri_args()
+                for key, val in pairs(args) do
+                    if key == "code" then
+                       key_str= val
+                    elseif key == "value" then
+                       value_str = val
+                    end
+                end
 
-		if( unique_str ~= "" )
+                if( key_str ~= "" and value_str ~= "" )
                 then
-		   local args = ngx.req.get_uri_args()
+			local inputContentStr = cjson.decode(value_str)
 
-		   for key, val in pairs(args) do
-		      if type(val) == "table" then
-                      	 --ngx.say(key, ": ", table.concat(val, ", "))
-		      else
-			 inputContentStr[key] = val
-		      end
-         	   end
-		   --ngx.say(""..cjson.encode(inputContentStr))
 		   local timeLocalNow = os.time(os.date('*t'))
 		   inputContentStr["modified"] = timeLocalNow
 
@@ -351,9 +339,9 @@ server {
                       return
 		   end
 		
-		   unique_str = "site:"..unique_str
+		   key_str = "site:"..key_str
 
-		   local get_res, get_err = db:get(unique_str)
+		   local get_res, get_err = db:get(key_str)
 		   if not get_res then
 		      inputContentStr["created"] = timeLocalNow
 		   end
@@ -372,14 +360,14 @@ server {
 		       end
 		   end
 
-		   ok, err = db:set(unique_str, cjson.encode(inputContentStr))
+		   ok, err = db:set(key_str, cjson.encode(inputContentStr))
 		   if not ok then
-		      outputData['error'] = "Failed to set "..unique_str..": "..err
+		      outputData['error'] = "Failed to set "..key_str..": "..err
 		      ngx.say(cjson.encode(outputData))
 		      return
 		   end
 
-		   if(inputContentStr["hosts"]~="") then
+		   if(inputContentStr["hosts"] and inputContentStr["hosts"]~="") then
 		   	local hostsContentArr = cjson.decode(inputContentStr["hosts"])
 			local l  = 1
 			local m  = table.getn(hostsContentArr)
@@ -402,6 +390,7 @@ server {
 		   -- or just close the connection right away:
 		   close_db(db);
 		   return
+
 		 else
 		    outputData['error'] = "Please pass the required parameters"
                     ngx.say(cjson.encode(outputData))

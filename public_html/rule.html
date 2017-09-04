@@ -336,6 +336,30 @@
             </span>
           </a>
 		  </li>
+		  <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-list"></i> <span>Lists</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
+           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
+          </ul>
+        </li>
+         <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Hosts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
+          </ul>
+        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -357,7 +381,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -381,7 +404,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -411,17 +434,10 @@
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
                <input type="hidden" class="form-control" name="uuid" id="uuid"/>
-               <input type="hidden" class="form-control" name="unique_prefix" id="unique_prefix" value="rule"/>
-               <input type="hidden" class="form-control" name="unique_value" id="unique_value" value=""/>
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">Type<sup class="required">*</sup></label>
     <div class="col-sm-5 ">
        <select class="form-control required" id="rule_type" name="rule_type">
-       	<option value="">--Select--</option>
-       	<option value="static_content">Serving Static Content</option>
-       	<option value="proxy_pass">Proxy Pass</option>
-       	<option value="fastcgi_proxy">FastCGI Proxy</option>
-       	<option value="rewrite">Rewrite</option>
        </select>
     </div>
     </div>
@@ -549,9 +565,25 @@ $(document).ready(function() {
 		}
 	});
 	
+		// fetch rules type
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=list:rule-type",function(result){
+			if(result.success && result.aaData && result.aaData.length>0){
+				var aaDataStr= result.aaData;
+				var aaDataObj = JSON.parse(aaDataStr);
+				$.each(aaDataObj, function(key,value){
+					if(key=="list_details"){
+						var contentStr='<option value="">--Select--</option>';
+						var subDataObj = JSON.parse(value);
+						$.each(subDataObj, function(i,row){
+							contentStr+='<option value="'+row.value+'">'+row.label+'</option>';
+						});
+						$("#rule_type").html(contentStr);
+					}
+				});
+			}
+		});
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
-		$("#uuid").val(getUrlVars()["id"]);
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key=rule:"+getUrlVars()["id"],function(result){
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -607,18 +639,17 @@ $(document).ready(function() {
 				var tokenStr=guid();
 				$("#uuid").val(tokenStr);
 			}
-			$("#unique_value").val(tokenStr);
 			var entry_form_data_obj = dataAsJson("EntryForm");
-			
+			var keyStr= "rule:"+tokenStr;
 			$.ajax({
 				url: 'https://dev.synergist.cloud/api_post_key',
 				type: 'POST',
-				data: entry_form_data_obj,
+				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,
 				dataType: 'json',
 				success: function(response){
 					if(response.success){
-						window.location.href = "/rule.html?id="+tokenStr+"&"+Math.random();
+						window.location.href = "/rule.html?id=rule:"+tokenStr+"&"+Math.random();
 					} else if(response.error) {
 						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 					}else {

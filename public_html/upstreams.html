@@ -336,6 +336,30 @@
             </span>
           </a>
 		  </li>
+		  <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-list"></i> <span>Lists</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
+           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
+          </ul>
+        </li>
+         <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Hosts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
+          </ul>
+        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -357,7 +381,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -381,7 +404,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -453,7 +476,7 @@ $(document).ready(function() {
 				if(typeof(valueObj)=="string"){
 					valueObj = JSON.parse(valueObj);
 				}
-				drawContentStr+='<td>'+valueObj.name+'</td><td><a href="upstream.html?name='+valueObj.name+'" title="Edit"><i class="fa fa-edit"></i></a></td>';
+				drawContentStr+='<td>'+valueObj.name+'</td><td><a href="upstream.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a></td>';
 				drawContentStr+='</tr>';
 			});
 			$('#display_content').html(drawContentStr);

@@ -336,30 +336,6 @@
             </span>
           </a>
 		  </li>
-		  <li class=" treeview">
-          <a href="#">
-            <i class=" fa fa-list"></i> <span>Lists</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
-           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
-          </ul>
-        </li>
-         <li class=" treeview">
-          <a href="#">
-            <i class=" fa fa-bank"></i> <span>Hosts</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
-           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
-          </ul>
-        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -381,6 +357,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -404,7 +381,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -418,12 +395,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <span id="pageHeadingID">Add</span> Upstream
-        <small>Block</small>
+        <span id="pageHeadingID">Add</span>
+        <small>Site</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Upstream</li>
+        <li class="active">Site</li>
       </ol>
     </section>
 
@@ -433,26 +410,34 @@
       <form class="form-horizontal" id="EntryForm">
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
-               <input type="hidden" class="form-control" name="uuid" id="uuid"/>
-               <input type="hidden" class="form-control" name="server_details" id="server_details" value=""/>
-  
+               <input type="hidden" class="form-control" id="rules" name="rules"/>
+               <input type="hidden" class="form-control" id="hosts" name="hosts"/>
+               <input type="hidden" class="form-control" id="uuid" name="uuid"/>
   <div class="form-group">
-    <label for="" class="col-sm-2 control-label">Name<sup class="required">*</sup></label>
+    <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
     <div class="col-sm-5 ">
-       <input class="form-control required" id="name" placeholder="Name" name="name" type="text">
+       <input class="form-control required" id="name" placeholder="Name" name="name" type="text" onblur="generate_manual_code('name','code');" onkeyup="generate_manual_code('name','code');">
+    </div>
+    
+    <label for="" class="col-sm-1 control-label">Code<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="code" placeholder="Code" name="code" type="text">
+       <span STYLE="font-size:12px; color:#737373;">Unique value</span>
+    </div>
+  </div><div class="form-group">
+    <label for="" class="col-sm-1 control-label">SSL Certificate</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="ssl_certificate" placeholder="SSL Certificate" name="ssl_certificate" type="text">
     </div>
   </div>
-  
   <div class="form-group">
-  	<label for="" class="col-sm-2 control-label"></label>
-    <label class="col-sm-4"><input name="keepalive" id="keepalive" value="1" type="checkbox"> Activates the cache for connections to upstream servers</label>
-    <label for="" class="col-sm-1 control-label connectionUI" style="display:none;">Connections</label>
-    <div class="col-sm-2 connectionUI" style="display:none;">
-       <input class="form-control" id="connections" placeholder="Connections" name="connections" type="text">
+    <label for="" class="col-sm-1 control-label">SSL Certificate Key</label>
+    <div class="col-sm-6 ">
+       <input class="form-control" id="ssl_certificate_key" placeholder="SSL Certificate Key" name="ssl_certificate_key" type="text">
     </div>
   </div>
   
-	<div CLASS="ROW">
+  <div CLASS="ROW host_details_class" style="display:none;">
     <div CLASS="col-md-12 itemsContent" STYLE="margin-left:13px;">
       <span style="float:right; font-weight:bold;">
 	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hostDetailsModules" style="margin-bottom: 10px;">+ Add new host details</button>
@@ -460,25 +445,26 @@
       </div>
     </div>
     
-  <div CLASS="row">
+  <div CLASS="row host_details_class" style="display:none;">
     <div class="itemsContent col-md-12" id="itemsTable">
-      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Add new address</label>
+      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Host Details</label>
       <div >
 	<div CLASS="table-responsive">
-	  <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="sub_table">
+	  <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="hosts_table">
 	    <thead>
 	      <tr class="item">
-		<th>Address</th>
-		<th>Server Type</th>
-		<th>Weight</th>
-		<th>Active connections</th>
-		<th>Max. no. of unsuccessful attempts</th>
-		<th>As backup server</th>
-		<th>As Permanently unavailable server</th>
+		<th>Host Name</th>
+		<th>IP Address</th>
+		<th>Index</th>
+		<th>Port</th>
+		<th>Redirect to HTTPS</th>
+		<th>Root Path</th>
+		<th>Access Log Path</th>
+		<th>Error Log Path</th>
 		<th colspan="2" align="center">Actions</th>
 		</tr>
 	      </thead>
-	    	<tbody id="subtable_items">
+	    <tbody id="host_items">
 	      
 	        </tbody>
 	    </table>
@@ -487,33 +473,61 @@
 	</div>
       </div>
     </div>
- <div class="col-sm-12 margin-top-15 " align="CENTER">
-		<input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+  <div CLASS="ROW ">
+    <div CLASS="col-md-12 itemsContent" STYLE="margin-left:13px;">
+      <span style="float:right; font-weight:bold;">
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="margin-bottom: 10px;">+ Add new Rule</button>
+	</span>
+      </div>
+    </div>
+  <div CLASS="row">
+    <div class="itemsContent col-md-12" id="itemsTable">
+      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Rewrite Rules</label>
+      <div >
+	<div CLASS="table-responsive">
+	  <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="rules_table">
+	    <thead>
+	      <tr class="item">
+		<th>Location</th>
+		<th>Condition</th>
+		<th>URL</th>
+		<th>Flag</th>
+		<th>Proxy Pass</th>
+		<th colspan="2" align="center">Actions</th>
+		</tr>
+	      </thead>
+	    <tbody id="link_items">
+	      
+	        </tbody>
+	    </table>
+	  <span style="float:right;font-size:12px;font-style:italic;color:#d9534f">Note: Please submit the form to save the changes!</span>
+	  </div>
+	
 	</div>
-</div>
+      </div>
+    </div>
+  <div class="col-sm-12 margin-top-15 " align="CENTER">
+                <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+                </div>
+   </div>
 	      
              
 	      </div>
              
              </form>
    </section>
-          <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-
-    </section>
-<div class="modal fade" id="hostDetailsModules" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal fade" id="hostDetailsModules" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
                 <button type="button" class="close" 
-                   data-dismiss="modal" onClick="resetSubContentForm()">
+                   data-dismiss="modal" onClick="resetHostForm()">
                        <span aria-hidden="true">&times;</span>
                        <span class="sr-only">Close</span>
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    Describe Server details
+                    Describe Host details
                 </h4>
             </div>
 	    
@@ -526,46 +540,47 @@
             
             <!-- Modal Body -->
             <div class="modal-body">
-            	  <div class="form-group" id="hostMessageId">
-                    <label for="item_label"><strong>Server Type</strong><span class="f_req">*</span></label>
-                      <select class="form-control" id="item_server_type">
-                      	<option value="TCP">TCP</option><option value="UNIX-domain sockets">UNIX-domain sockets</option>
-                      </select>
-                      <input type="hidden" class="form-control" id="item_uuid"/>
+              <div class="form-group" id="hostMessageId">
+                    <label for="item_label"><strong>Host Name</strong><span class="f_req">*</span></label>
+                      <input class="form-control" id="item_host_name" placeholder="Enter Host Name"/>
+                      <input type="hidden" class="form-control" id="host_uuid"/>
                   </div>
-              		<div class="form-group">
-                    	<label class="col-md-12" style="padding-left:0px"><strong>Address</strong><span class="f_req">*</span></label>
-                    	<div class="col-md-2 unix_ui" style="padding-left:0px;display:none;"><button class="form-control">unix:</button></div>
-                      	<div class="col-md-10" style="padding-right:0px;padding-left:0px;"><input class="form-control" id="item_address" placeholder="Enter address"/></div>
-                      	<span class="col-md-12" style="padding-left:0px;font-size:13px;font-style:italic;">Address can be specified as a domain name or IP address, with an optional port</span>
-                  	</div>
                   
                   <div class="form-group">
-                    <label for="item_type" id="itemlinklabel"><strong>Server Weight</strong></label>
-                     <input class="form-control" id="item_weight" value="1"/>
+                    <label for="item_type" id="itemlinklabel"><strong>IP Address</strong></label>
+                     <input class="form-control" id="host_ip" placeholder="Enter IP Address"/>
                   </div>
                   <div class="form-group">
-                    <label for="item_type" id="itemlinklabel"><strong>Maximum number of active connections</strong></label>
-                     <input class="form-control" id="item_max_conns" value="1"/>
+                    <label for="item_type" id="itemlinklabel"><strong>Index</strong><span class="f_req">*</span></label>
+                     <input class="form-control" id="host_index" placeholder="Enter index"/>
                   </div>
                    <div class="form-group">
-                    <label for="item_type" id="itemlinklabel"><strong>Maximum number of unsuccessful attempts</strong></label>
-                     <input class="form-control" id="item_max_fails" value="1"/>
+                    <label for="item_type" id="itemlinklabel"><strong>Port</strong><span class="f_req">*</span></label>
+                     <input class="form-control" id="host_port" placeholder="Enter Port"/>
                   </div>
                   <div class="form-group">
-                    <label><strong><input  id="item_backup" value="1" type="checkbox">&nbsp;Mark this server as backup server</strong></label>
+                    <label><strong><input  id="host_redirect_to_https" value="1" type="checkbox">&nbsp;Redirect to HTTPS</strong></label>
                   </div>
                   <div class="form-group">
-                    <label><strong><input  id="item_down" value="1" type="checkbox">&nbsp;Mark this server as permanently unavailable</strong></label>
+                    <label for="item_type" id="itemlinklabel"><strong>Root Path</strong><span class="f_req">*</span></label>
+                     <input class="form-control" id="host_root_path" placeholder=""/>
+                  </div>
+                   <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Access Log Path</strong></label>
+                     <input class="form-control" id="host_access_log_path" placeholder=""/>
+                  </div>
+                  <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Error Log Path</strong></label>
+                     <input class="form-control" id="host_error_log_path" placeholder=""/>
                   </div>
             </div>
             
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetSubContentForm()">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetHostForm()">
                   Close
                 </button>
-                <button type="button" class="btn btn-primary" onClick="createSubContentFormRow()">
+                <button type="button" class="btn btn-primary" onClick="createHostRow()">
                     Add
                 </button>
             </div>
@@ -573,6 +588,74 @@
     </div>
    </div>
  
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal" onClick="resetItemForm()">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Describe Rule
+                </h4>
+            </div>
+	    
+	    <style>
+	      .form-group {
+	      margin-bottom: 15px;
+	      overflow: hidden;
+	      }
+	      </style>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <div class="form-group" id="messageId">
+                    <label for="item_label"><strong>Location</strong><span class="f_req">*</span></label>
+                      <input class="form-control" id="item_location" placeholder="Enter location"/>
+                      <input type="hidden" class="form-control" id="item_uuid"/>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="item_type" id="itemlinklabel"><strong>Condition</strong><span class="f_req">*</span></label>
+                     <input class="form-control" id="item_regex" placeholder="Enter Regex"/>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="item_type" id="itemlinklabel" class="col-md-12" style="padding-left:0px;"><strong>URL</strong><span class="f_req">*</span></label>
+                    <input class="form-control" id="item_url" placeholder="Enter URL"/>
+                  </div>
+                  <div class="form-group" style="margin-top:5px;">
+                 <label >   <span for="item_type"><strong>Flag</strong></span></label>
+                 <input type="" class="form-control" id="item_flag" value="last"/>
+                  </div>
+                 <div class="form-group" style="margin-top:5px;">
+                 <label >   <span for="item_type"><strong>Proxy Pass</strong></span></label>
+                 <input type="" class="form-control" id="item_proxy_pass" value=""/>
+                  </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetItemForm()">
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary" onClick="savelinkitem()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>
+
+  </div>
 	<footer class="main-footer">
 	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
   	</footer>
@@ -581,6 +664,168 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
+function resetHostForm(){
+	$("#hostMsgSpan").remove();
+	$('#host_ip').val('');
+	$('#item_host_name').val('');
+	$('#host_uuid').val('');
+	$('#host_index').val('');
+	$('#host_port').val('');
+	$('#host_redirect_to_https').prop('checked', false);
+	$('#host_root_path').val('');
+	$('#host_access_log_path').val('');
+	$('#host_error_log_path').val('');
+}
+function generateHostsObjectJson(){
+	var createArr=new Array();
+	var i=0;
+	$('.hostItemClass').each(function(){
+		var createObject={};
+		createObject['uuid']=$(this).find('#uuid').val();
+		createObject['host_name']=$(this).find('#host_name').val();
+		createObject['ip_address']=$(this).find('#ip_address').val();
+		createObject['index']=$(this).find('#index').val();
+		createObject['port']=$(this).find('#port').val();
+		createObject['redirect_to_https']=$(this).find('#redirect_to_https').val();
+		createObject['root_path']=$(this).find('#root_path').val();
+		createObject['access_log_path']=$(this).find('#access_log_path').val();
+		createObject['error_log_path']=$(this).find('#error_log_path').val();
+		createArr[i]=createObject;
+		i++;
+	});
+	$("#hosts").val(JSON.stringify(createArr));
+}
+function generateRulesObjectJson(){
+	var createArr=new Array();
+	var i=0;
+	$('.itemClass').each(function(){
+		var createObject={};
+		createObject['uuid']=$(this).find('#uuid').val();
+		createObject['location']=$(this).find('#location').val();
+		createObject['regex']=$(this).find('#regex').val();
+		createObject['url']=$(this).find('#url').val();
+		createObject['flag']=$(this).find('#flag').val();
+		createObject['proxy_pass']=$(this).find('#proxy_pass').val();
+		createArr[i]=createObject;
+		i++;
+	});
+	$("#rules").val(JSON.stringify(createArr));
+}
+
+function resetItemForm(){
+	$("#msgSpan").remove();
+	$('#item_location').val('');
+	$('#item_uuid').val('');
+	$('#item_regex').val('');
+	$('#item_url').val('');
+	$('#item_flag').val('last');
+	$('#item_proxy_pass').val('');
+}
+function remove_host_item(e){
+	if(e!=""){
+		$(".hosttr_"+e).closest('tr').remove();
+	}
+}
+function remove_item(e){
+	if(e!=""){
+		$(".itemtr_"+e).closest('tr').remove();
+	}
+}
+function edit_item(e){
+	if(e!=""){
+		var row= $(".itemtr_"+e).closest('tr');
+		$("#item_uuid").val(e);
+		$("#item_location").val(row.find('#location').val());
+		$("#item_regex").val(row.find('#regex').val());
+		$("#item_url").val(row.find('#url').val());
+		$("#item_flag").val(row.find('#flag').val());
+		$("#item_proxy_pass").val(row.find('#proxy_pass').val());
+		$('#myModal').modal('show'); 
+	}
+}
+function edit_host_item(e){
+	if(e!=""){
+		var row= $(".hosttr_"+e).closest('tr');
+		$("#host_uuid").val(e);
+		$("#item_host_name").val(row.find('#host_name').val());
+		$("#host_ip").val(row.find('#ip_address').val());
+		$("#host_index").val(row.find('#index').val());
+		if(row.find('#redirect_to_https').val()==1){
+			$("#host_redirect_to_https").prop('checked', true);
+		}
+		
+		$("#host_port").val(row.find('#port').val());
+		$("#host_root_path").val(row.find('#root_path').val());
+		$("#host_access_log_path").val(row.find('#access_log_path').val());
+		$("#host_error_log_path").val(row.find('#error_log_path').val());
+		$('#hostDetailsModules').modal('show'); 
+	}
+}
+function createHostRow(){
+	$("#hostMsgSpan").remove();
+	if($('#item_host_name').val()!="" && $('#host_index').val()!="" && $('#host_port').val()!="" && $('#host_root_path').val()!=""){
+		var uuidStr=$("#host_uuid").val();
+		if(uuidStr==""){
+			uuidStr = guid();
+		}
+		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='host_name' value='"+$('#item_host_name').val()+"'>"+$('#item_host_name').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='ip_address' value='"+$('#host_ip').val()+"'>"+$('#host_ip').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='index' value='"+$('#host_index').val()+"'>"+$('#host_index').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='port' value='"+$('#host_port').val()+"'>"+$('#host_port').val()+"</td>";
+		var host_redirect_to_https=0;
+		if($('#host_redirect_to_https').is(":checked")){
+			host_redirect_to_https=1;
+		}
+		contentStr+="<td><input type='hidden' id='redirect_to_https' value='"+host_redirect_to_https+"'>"+host_redirect_to_https+"</td>";
+		contentStr+="<td><input type='hidden' id='root_path' value='"+$('#host_root_path').val()+"'>"+$('#host_root_path').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='access_log_path' value='"+$('#host_access_log_path').val()+"'>"+$('#host_access_log_path').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='error_log_path' value='"+$('#host_error_log_path').val()+"'>"+$('#host_error_log_path').val()+"</td>";
+		
+		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_host_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_host_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+
+		if($("#host_uuid").val()!=""){
+			$(".hosttr_"+uuidStr).html(contentStr);
+		}else{
+			$("#host_items").append("<tr class='hostItemClass hosttr_"+uuidStr+"'>"+contentStr+"</tr>");
+		}
+		$('#hosts_table').basictable('destroy');
+		$('#hosts_table').basictable({
+			breakpoint: 751
+		});
+		$('#hostDetailsModules').modal('hide');
+		resetHostForm();
+	} else{ 
+		$("#hostMessageId").before('<span id="hostMsgSpan" style="color:#CC0000;">Please add all the required fields!</span>');
+	}
+}
+function savelinkitem (){
+	$("#msgSpan").remove();
+	if($('#item_location').val()!="" && $('#item_regex').val()!="" && $('#item_url').val()!=""){
+		var uuidStr=$("#item_uuid").val();
+		if(uuidStr==""){
+			uuidStr = guid();
+		}
+		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='location' value='"+$('#item_location').val()+"'>"+$('#item_location').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='regex' value='"+$('#item_regex').val()+"'>"+$('#item_regex').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='url' value='"+$('#item_url').val()+"'>"+$('#item_url').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='flag' value='"+$('#item_flag').val()+"'>"+$('#item_flag').val()+"</td>";
+		contentStr+="<td><input type='hidden' id='proxy_pass' value='"+$('#item_proxy_pass').val()+"'>"+$('#item_proxy_pass').val()+"</td>";
+		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+		if($("#item_uuid").val()!=""){
+			$(".itemtr_"+uuidStr).html(contentStr);
+		}else{
+			$("#link_items").append("<tr class='itemClass itemtr_"+uuidStr+"'>"+contentStr+"</tr>");
+		}
+		$('#rules_table').basictable('destroy');
+		$('#rules_table').basictable({
+			breakpoint: 751
+		});
+		$('#myModal').modal('hide');
+		resetItemForm();
+	} else{ 
+		$("#messageId").before('<span id="msgSpan" style="color:#CC0000;">Please add all the required fields!</span>');
+	}
+}
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -598,170 +843,72 @@ function getUrlVars() {
     });
     return vars;
 }
-function remove_sub_item(e){
-	if(e!=""){
-		$(".parameterstr_"+e).closest('tr').remove();
-	}
-}
-function edit_sub_item(e){
-	if(e!=""){
-		var row= $(".parameterstr_"+e).closest('tr');
-		$("#item_uuid").val(e);
-		var addressStr= row.find('#address').val();
-		$("#item_server_type").val(row.find('#server_type').val());
-		if(row.find('#server_type').val()!="" && row.find('#server_type').val()!="TCP"){
-			addressStr= addressStr.replace("unix:", "");
-			$(".unix_ui").show();
-		}
-		
-		$("#item_address").val(addressStr);
-		$("#item_weight").val(row.find('#weight').val());
-		$("#item_max_conns").val(row.find('#max_conns').val());
-		if(row.find('#backup').val()==1){
-			$("#item_backup").prop('checked', true);
-		}
-		if(row.find('#down').val()==1){
-			$("#item_down").prop('checked', true);
-		}
-		$("#item_max_fails").val(row.find('#max_fails').val());
-		$('#hostDetailsModules').modal('show'); 
-	}
-}
-function createSubContentFormRow(){
-	$("#subFormMsgSpan").remove();
-	if($('#item_address').val()!=""){
-		var uuidStr=$("#item_uuid").val();
-		if(uuidStr==""){
-			uuidStr = guid();
-		}
-		var addressValStr= $('#item_address').val();
-		if($('#item_server_type').val() !="TCP"){
-			addressValStr= "unix:"+$('#item_address').val();
-		}
-		var contentStr="<td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='address' value='"+addressValStr+"'>"+addressValStr+"</td>";
-		contentStr+="<td><input type='hidden' id='server_type' value='"+$('#item_server_type').val()+"'>"+$('#item_server_type').val()+"</td>";
-		contentStr+="<td><input type='hidden' id='weight' value='"+$('#item_weight').val()+"'>"+$('#item_weight').val()+"</td><td><input type='hidden' id='max_conns' value='"+$('#item_max_conns').val()+"'>"+$('#item_max_conns').val()+"</td><td><input type='hidden' id='max_fails' value='"+$('#item_max_fails').val()+"'>"+$('#item_max_fails').val()+"</td>";
-		var as_backup_server=0;
-		if($('#item_backup').is(":checked")){
-			as_backup_server=1;
-		}
-		contentStr+="<td><input type='hidden' id='backup' value='"+as_backup_server+"'>"+as_backup_server+"</td>";
-		var as_down_server=0;
-		if($('#item_down').is(":checked")){
-			as_down_server=1;
-		}
-		contentStr+="<td><input type='hidden' id='down' value='"+as_down_server+"'>"+as_down_server+"</td>";
-		
-		contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_sub_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_sub_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
-		if($("#item_uuid").val()!=""){
-			$(".parameterstr_"+uuidStr).html(contentStr);
-		}else{
-			$("#subtable_items").append("<tr class='parametersItemClass parameterstr_"+uuidStr+"'>"+contentStr+"</tr>");
-		}
-		$('#sub_table').basictable('destroy');
-		$('#sub_table').basictable({
-			breakpoint: 751
-		});
-		$('#hostDetailsModules').modal('hide');
-		resetSubContentForm();
-	} else{ 
-		$("#hostMessageId").before('<span id="subFormMsgSpan" style="color:#CC0000;">Please add all the required fields!</span>');
-	}
-}
-function resetSubContentForm(){
-	$(".unix_ui").hide();
-	$("#subFormMsgSpan").remove();
-	$("#item_uuid").val('');
-	$("#item_address").val('');
-	$("#item_server_type").val('TCP');
-	$("#item_weight").val(1);
-	$("#item_max_conns").val(1);
-	$('#item_max_fails').val(1);
-	$("#item_backup").prop("checked", false);
-	$("#item_down").prop("checked", false);
-}
-function generateServerObjectJson(){
-	var createArr=new Array();
-	var i=0;
-	$('.parametersItemClass').each(function(){
-		var createObject={};
-		createObject['uuid']=$(this).find('#uuid').val();
-		createObject['address']=$(this).find('#address').val();
-		createObject['server_type']=$(this).find('#server_type').val();
-		createObject['weight']=$(this).find('#weight').val();
-		createObject['max_conns']=$(this).find('#max_conns').val();
-		createObject['max_fails']=$(this).find('#max_fails').val();
-		createObject['backup']=$(this).find('#backup').val();
-		createObject['down']=$(this).find('#down').val();
-		createArr[i]=createObject;
-		i++;
-	});
-	$("#server_details").val(JSON.stringify(createArr));
+function generate_manual_code(name,code){
+	var val=$("#"+name).val();
+	var patt=/[^A-Za-z0-9_-]/g;
+	var result=val.replace(patt,' ');
+	result=result.replace(/-/g, ' ');
+	result=result.replace(/\s+/g, ' ');
+	result = result.replace(/^\s+|\s+$/g,'');
+	result=result.replace(/\s/g, '-');
+	result=result.toLowerCase();
+	$("#"+code).val(result);
 }
 $(document).ready(function() {
-	$('#sub_table').basictable({
-			breakpoint: 751
-		});
-	
-	$("#item_server_type").change(function(){
-		if($(this).val()!="TCP"){
-			$(".unix_ui").show();
-		} else {
-			$(".unix_ui").hide();
-		}
-	});
-	
-	$("#keepalive").click(function(){
-		if ($(this).is(":checked")) {
-        	$(".connectionUI").show();
-    	} else {
-        	$(".connectionUI").hide();
-    	}
-	});
-	
-	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
+	$(".host_details_class").show();
+	if(getUrlVars() && getUrlVars()["code"]  && getUrlVars()["code"]!="") {
+		$("#code").val(getUrlVars()["code"]);
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=site:"+getUrlVars()["code"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
 				var aaDataObj = JSON.parse(aaDataStr);
 				$.each(aaDataObj, function(key,value){
-					$("#"+key).val(value);
-					if(key=="server_details"){
+					if(key=="rules"){
 						var contentStr='';
 						$.each(JSON.parse(value), function(i,row){
 							var uuidStr=guid();
 							if(row.uuid && row.uuid!=""){
 								uuidStr= row.uuid;
 							}
-							contentStr+="<tr class='parametersItemClass parameterstr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='address' value='"+row.address+"'>"+row.address+"</td>";
-    						contentStr+="<td><input type='hidden' id='server_type' value='"+row.server_type+"'>"+row.server_type+"</td>";
-    						contentStr+="<td><input type='hidden' id='weight' value='"+row.weight+"'>"+row.weight+"</td>";
-    						contentStr+="<td><input type='hidden' id='max_conns' value='"+row.max_conns+"'>"+row.max_conns+"</td>";
-    						contentStr+="<td><input type='hidden' id='max_fails' value='"+row.max_fails+"'>"+row.max_fails+"</td>";
-							contentStr+="<td><input type='hidden' id='backup' value='"+row.backup+"'>"+row.backup+"</td><td><input type='hidden' id='down' value='"+row.down+"'>"+row.down+"</td>";
-    						contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_sub_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_sub_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+							contentStr+="<tr class='itemClass itemtr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='location' value='"+row.location+"'>"+row.location+"</td>";
+    						contentStr+="<td><input type='hidden' id='regex' value='"+row.regex+"'>"+row.regex+"</td>";
+    						contentStr+="<td><input type='hidden' id='url' value='"+row.url+"'>"+row.url+"</td>";
+    						contentStr+="<td><input type='hidden' id='flag' value='"+row.flag+"'>"+row.flag+"</td>";
+							contentStr+="<td><input type='hidden' id='proxy_pass' value='"+row.proxy_pass+"'>"+row.proxy_pass+"</td>";
+    						contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
 						});
-						$("#subtable_items").html(contentStr);
-					}
-					if(key=="keepalive"){
-						$("#keepalive").prop("checked", true);
-						$(".connectionUI").show();
+						$("#link_items").html(contentStr);
+					} else if(key=="hosts") {
+						var contentStr='';
+						$.each(JSON.parse(value), function(i,row){
+							var uuidStr=guid();
+							if(row.uuid && row.uuid!=""){
+								uuidStr= row.uuid;
+							}
+							contentStr+="<tr class='hostItemClass hosttr_"+uuidStr+"'><td><input type='hidden' id='uuid' value='"+uuidStr+"'><input type='hidden' id='host_name' value='"+row.host_name+"'>"+row.host_name+"</td>";
+    						contentStr+="<td><input type='hidden' id='ip_address' value='"+row.ip_address+"'>"+row.ip_address+"</td>";
+    						contentStr+="<td><input type='hidden' id='index' value='"+row.index+"'>"+row.index+"</td><td><input type='hidden' id='port' value='"+row.port+"'>"+row.port+"</td>";
+    						contentStr+="<td><input type='hidden' id='redirect_to_https' value='"+row.redirect_to_https+"'>"+row.redirect_to_https+"</td>";
+							contentStr+="<td><input type='hidden' id='root_path' value='"+row.root_path+"'>"+row.root_path+"</td>";
+							contentStr+="<td><input type='hidden' id='access_log_path' value='"+row.access_log_path+"'>"+row.access_log_path+"</td>";
+							contentStr+="<td><input type='hidden' id='error_log_path' value='"+row.error_log_path+"'>"+row.error_log_path+"</td>";
+   							contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_host_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_host_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+						});
+						$("#host_items").html(contentStr);
+					} else{
+						$("#"+key).val(value);
 					}
 				});
 			}
+			$('#rules_table').basictable({
+				breakpoint: 751
+			});
+			$('#hosts_table').basictable({
+				breakpoint: 751
+			});
 		});
 	}
-	function dataAsJson(name){
-		var x = $("#"+name).serializeArray();
-		var outputObj = new Object();
-    	$.each(x, function(i, field){
-    		if(field.value!=""){
-    			outputObj[field.name]   = field.value;
-    		}
-     	});
-    	return outputObj;
-    }
     $("#EntryForm").validate({
 		ignore: "",
 		onkeyup: false,
@@ -779,27 +926,27 @@ $(document).ready(function() {
 			}
 		},
 		rules: {
-			name: { required: true }
+			name: { required: true },
+			code: { required: true }
 		},
 		submitHandler: function(form) {
-			generateServerObjectJson();
-			
+			generateRulesObjectJson();
+			generateHostsObjectJson();
 			var tokenStr=$("#uuid").val();
 			if(tokenStr=="") {
 				var tokenStr=guid();
 				$("#uuid").val(tokenStr);
 			}
 			var entry_form_data_obj = dataAsJson("EntryForm");
-			var keyStr= "upstream:"+$("#name").val();
 			$.ajax({
-				url: 'https://dev.synergist.cloud/api_post_key',
-				type: 'POST',
-				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
+				url: 'https://dev.synergist.cloud/api_set_site',
+				type: 'GET',
+				data: {"value" : JSON.stringify(entry_form_data_obj), "code" : $("#code").val()},
 				contentType: false,
 				dataType: 'json',
 				success: function(response){
 					if(response.success){
-						window.location.href = "/upstream.html?id="+keyStr+"&"+Math.random();
+						window.location.href = "/site.html?code="+$("#code").val()+"&"+Math.random();
 					} else if(response.error) {
 						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 					}else {
@@ -809,8 +956,17 @@ $(document).ready(function() {
 			});
 		}
 	});
-
 });
+	function dataAsJson(name){
+		var x = $("#"+name).serializeArray();
+		var outputObj = new Object();
+    	$.each(x, function(i, field){
+    		if(field.value!=""){
+    			outputObj[field.name]   = field.value;
+    		}
+     	});
+    	return outputObj;
+    }
 </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>

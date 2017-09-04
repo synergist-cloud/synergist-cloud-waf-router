@@ -9,22 +9,21 @@
 <meta name="generator" content="vi">
 <meta name="keywords" content="Synergist cloud, cloud job bagging system, job costing system, Synergist, Balinder, Walia">
 <meta name="description" content="nginx test page">
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="css/Admin.min.css">
-   <link rel="stylesheet" href="css/basictable.css">
- 
-  <link rel="stylesheet" href="css/skins/_all-skins.min.css">
+ <!-- Tell the browser to be responsive to screen width -->
+ <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+ <!-- Bootstrap 3.3.6 -->
+ <link rel="stylesheet" href="css/bootstrap.min.css">
+ <!-- Font Awesome -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+ <!-- Ionicons -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+ <!-- Theme style -->
+ <link rel="stylesheet" href="css/Admin.min.css">
+ <link rel="stylesheet" href="css/skins/_all-skins.min.css">
  </head>
- <body class="hold-transition skin-blue sidebar-mini">
+ <body class="hold-transition skin-blue sidebar-mini">	
  <div class="wrapper">
+ 
 
   <header class="main-header">
     <!-- Logo -->
@@ -301,7 +300,7 @@
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
- <aside class="main-sidebar">
+  <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
@@ -326,7 +325,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
+     <ul class="sidebar-menu">
       
         <li class="active treeview">
           <a href="index.html">
@@ -336,6 +335,30 @@
             </span>
           </a>
 		  </li>
+		  <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-list"></i> <span>Lists</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
+           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
+          </ul>
+        </li>
+         <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Hosts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
+          </ul>
+        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -357,7 +380,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -381,7 +403,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -390,74 +412,349 @@
     <!-- /.sidebar -->
   </aside>
 
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-		URL <small>List</small>
+        <span id="pageHeadingID">Add</span>
+        <small>List</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">URL List</li>
+        <li class="active">List</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-		<div class="row">
-	  		<div class="content table-responsive table-full-width">
-		 		<div class="table-responsive" style="border:none;" >
-                                <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint"  style="background-color: rgb(255, 255, 255); border-radius: 4px;" >
-                                    <thead>
-                                        <tr>
-                                            <th>KEY</th>
-                                            <th>VALUE</th>
-                                        </tr>
-                                    </thead>
-                                     <tfoot>
-                                        <tr>
-                                            <th>KEY</th>
-                                            <th>VALUE</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody id="display_content"></tbody>
-                                </table>
-        	    </div>
-			</div>
-		</div>
+	 
+      <form class="form-horizontal" id="EntryForm">
+       		 <div class="row">
+           		  <div class=" col-sm-12 col-lg-8">
+             		<input id="uuid" name="uuid" type="hidden" value="">
+   <div class="form-group">
+    <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="name" placeholder="Name" name="name" type="text" onblur="generate_manual_code('name','code');" onkeyup="generate_manual_code('name','code');">
+    </div>
+    
+    <label for="" class="col-sm-1 control-label">Code<sup class="required">*</sup></label>
+    <div class="col-sm-5 ">
+       <input class="form-control required" id="code" placeholder="Code" name="code" type="text">
+       <span STYLE="font-size:12px; color:#737373;">Unique value</span>
+    </div>
+  </div>  
+  <div class="form-group">
+    									<label for="" class="col-sm-1 control-label"></label>
+    									<div class="col-sm-9" style="margin-top:6px;">
+    										<div STYLE="float:left;display:inline-block;">
+      		  									<label> <input type="checkbox" id="status" name="status" value="1"> <strong style="font-weight:600">Active</strong></label>
+    			  							</div>
+										</div>
+									</div>
+									<div CLASS="ROW ">
+									<div CLASS="col-md-12 itemsContent">
+										<span style="float:right; font-weight:bold;">
+											<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addNewItemModal" style="margin-bottom: 10px;">+ Add new Item</button>
+										</span>
+									</div>
+									</div>
+									<div CLASS="row">
+  									<div class="itemsContent col-md-12" id="itemsTable">
+    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">List Items</label>
+    									<input type="hidden" id="list_details" name="list_details" value="">
+										<div CLASS="table-responsive">
+										   	<table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint">
+												<thead>
+												  <tr class="item">
+												  	  <th>Label</th>
+												  	  <th>Value</th>
+													  <th colspan="2" align="center">Actions</th>
+												  </tr>
+											  </thead>
+											  <tbody id="link_items">
+											  
+											  </tbody>
+											</table>
+											<span style="float:right;font-size:12px;font-style:italic;color:#d9534f">Note: Please submit the form to save the changes!</span>
+										</div>
+											
+									</div>
+									</div>
+  	<div class="col-sm-12 margin-top-15 " align="CENTER">
+        <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+    </div>
+</div>
+             
+       		 </div>
+             
+             </form>
+   </section>
+		
+        <!-- right col -->
+      </div>
       <!-- /.row (main row) -->
 
     </section>
+<!-- Modal -->
+	<div class="modal fade" id="addNewItemModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal" onClick="resetItemForm()">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Item
+                </h4>
+            </div>
+			
+			<style>
+			.form-group {
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+			
+			</style>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+            	<div class="form-group" id="messageId">
+                    <label for="item_label"><strong>Label</strong><span class="f_req">*</span></label>
+                      <input class="form-control" id="item_label" placeholder="Enter Label"/>
+                      <input type="hidden" class="form-control" id="item_uuid"/>
+                  </div>
+                  <div class="form-group" style="margin-top:5px;">
+                 	<label><span for="item_type"><strong>Value</strong></span></label>
+                	<input type="text" class="form-control" id="item_value" placeholder="Value" value=""/>
+                  </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetItemForm()">
+                	Close
+                </button>
+                <button type="button" class="btn btn-primary" onClick="savelinkitem()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-  </div>
- 
-  <footer class="main-footer">
+   <footer class="main-footer">
     
     <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights
     reserved.
   </footer>
+  
 </div>
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
- 	//$.getJSON("api_fetch_links.json",function(html){
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=url",function(html){
-		if(html.aaData && html.aaData.length>0){
-			var drawContentStr='';
-			$.each(html.aaData, function(i,row){
-				drawContentStr+='<tr><td>'+row.key+'</td><td>'+row.value+'</td></tr>';
+function generateObjectJson(){
+	var createArr=new Array();
+	var i=0;
+	$('.itemClass').each(function(){
+		var createObject={};
+		var uuid=$(this).find('#list_uuid').val();
+  		createObject['uuid']=$(this).find('#list_uuid').val();
+  		createObject['label']=$(this).find('#labelField').val();
+  		createObject['value']=$(this).find('#labelValueField').val();
+  		createArr[i]=createObject;
+  		i++;
+  	});
+  	$("#list_details").val(JSON.stringify(createArr));
+}
+function generate_manual_code(name,code){
+	var val=$("#"+name).val();
+	var patt=/[^A-Za-z0-9_-]/g;
+	var result=val.replace(patt,' ');
+	result=result.replace(/-/g, ' ');
+	result=result.replace(/\s+/g, ' ');
+	result = result.replace(/^\s+|\s+$/g,'');
+	result=result.replace(/\s/g, '-');
+	result=result.toLowerCase();
+	$("#"+code).val(result);
+}
+function remove_item(e){
+	if(e!=""){
+		$(".itemtr_"+e).parents('.itemClass').remove();
+	}
+}
+
+function edit_item(e){
+	if(e!=""){
+		var row= $(".itemtr_"+e).parents('.itemClass');	
+		$("#item_uuid").val(e);
+		$("#item_label").val(row.find('#labelField').val());
+		$("#item_value").val(row.find('#labelValueField').val());
+		$('#addNewItemModal').modal('show'); 
+	}
+}
+
+function savelinkitem(){
+	$("#msgSpan").remove();
+	var item_uuid=$("#item_uuid").val();
+	var item_value = $("#item_value").val();
+	var item_label=$("#item_label").val();
+	
+	if(item_label!=""){
+		var newEntryFlag=false;
+			if(item_uuid==""){
+				item_uuid=guid();
+				newEntryFlag=true;
+			}
+			var subHTMLSTR='<td><input type="hidden" value="'+item_uuid+'" id="list_uuid"><input class="itemtr_'+item_uuid+'" id="labelField" type="hidden" value="'+item_label+'">'+item_label+'</td>';
+				subHTMLSTR+='<td><input id="labelValueField" type="hidden" value="'+item_value+'">'+item_value+'</td>';
+				subHTMLSTR+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+item_uuid+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+item_uuid+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+			
+			if(newEntryFlag){
+				var htmlStr='<tr class="itemClass">'+subHTMLSTR+'</tr>';
+				$("#link_items").append(htmlStr);
+			}else{
+				var htmlStr=subHTMLSTR;
+				$(".item_"+item_uuid).html(htmlStr);
+			}
+			generateObjectJson();
+			$('#addNewItemModal').modal('hide');
+			$('#table-breakpoint').basictable('destroy');
+			$('#table-breakpoint').basictable({
+        		breakpoint: 751
+   			});
+			resetItemForm();			
+	}else{
+		$("#messageId").before('<span id="msgSpan" style="color:#CC0000;">Please add the required field!</span>');
+	}	
+}		
+		
+function resetItemForm(){
+	$("#msgSpan").remove();
+	$("#item_uuid").val("");
+	$("#item_value").val("");
+	$("#item_label").val('');
+}
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+    function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
+}
+
+    $(document).ready(function() {
+		if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
+			$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
+				if(result.success && result.aaData && result.aaData.length>0){
+				$("#pageHeadingID").html("Edit");
+				var aaDataStr= result.aaData;
+				var aaDataObj = JSON.parse(aaDataStr);
+				$.each(aaDataObj, function(key,value){
+					$("#"+key).val(value);
+					if(key=="list_details"){
+						var contentStr='';
+						$.each(JSON.parse(value), function(i,row){
+							var uuidStr=guid();
+							if(row.uuid && row.uuid!=""){
+								uuidStr= row.uuid;
+							}
+							contentStr+="<tr class='itemClass'><td><input type='hidden' id='list_uuid' value='"+uuidStr+"'><input class='itemtr_"+uuidStr+"' type='hidden' id='labelField' value='"+row.label+"'>"+row.label+"</td>";
+    						contentStr+="<td><input type='hidden' id='labelValueField' value='"+row.value+"'>"+row.value+"</td>";
+    						contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+						});
+						$("#link_items").html(contentStr);
+					}
+					if(key=="status"){
+						$("#status").prop("checked", true);
+					}
+				});
+			}
 			});
-			$('#display_content').html(drawContentStr);
 		}
-		$('#table-breakpoint').basictable({
-        	breakpoint: 751
-      	});
-	});
-});
+			$('#table-breakpoint').basictable({
+        		breakpoint: 751
+   			});
+      $("#EntryForm").validate({
+			ignore: "",
+			onkeyup: false,
+			errorClass: 'error',
+			validClass: 'valid',
+			errorElement: "em",
+			errorPlacement: function(error, element) {
+				$(element).closest('div').append(error);
+			},
+			onfocusout: false,
+			invalidHandler: function(form, validator) {
+				var errors = validator.numberOfInvalids();
+				if (errors) {                    
+					validator.errorList[0].element.focus();
+				}
+			},
+			rules: {
+				name: { required: true },
+				code: { required: true }
+			},
+			submitHandler: function(form) {
+				generateObjectJson();
+			
+				var tokenStr=$("#uuid").val();
+				if(tokenStr=="") {
+					var tokenStr=guid();
+					$("#uuid").val(tokenStr);
+				}
+				var entry_form_data_obj = dataAsJson("EntryForm");
+				var keyStr= "list:"+$("#code").val();
+				$.ajax({
+					url: 'https://dev.synergist.cloud/api_post_key',
+					type: 'POST',
+					data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
+					contentType: false,
+					dataType: 'json',
+					success: function(response){
+						if(response.success){
+							window.location.href = "/list.html?id="+keyStr+"&"+Math.random();
+						} else if(response.error) {
+							$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
+						}else {
+							$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>Sorry, error while saving details!</div>');
+						}
+					}
+				});
+ 			}
+		});		
+
+      
+    });
+    function dataAsJson(name){
+		var x = $("#"+name).serializeArray();
+		var outputObj = new Object();
+    	$.each(x, function(i, field){
+    		if(field.value!=""){
+    			outputObj[field.name]   = field.value;
+    		}
+     	});
+    	return outputObj;
+    }
   </script>
-<script src="js/basictable.js"></script>
+
+  <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
 
 </body>

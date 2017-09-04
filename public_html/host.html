@@ -336,6 +336,30 @@
             </span>
           </a>
 		  </li>
+		  <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-list"></i> <span>Lists</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
+           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
+          </ul>
+        </li>
+         <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Hosts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
+          </ul>
+        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -357,7 +381,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -381,7 +404,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -410,8 +433,7 @@
       <form class="form-horizontal" id="EntryForm">
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
-               <input type="hidden" class="form-control" id="rules" name="rules"/>
-               <input type="hidden" class="form-control" id="uuid" name="uuid"/><input type="hidden" class="form-control" id="unique_prefix" name="unique_prefix" value="host"/><input type="hidden" class="form-control" id="unique_value" name="unique_value"/>
+               <input type="hidden" class="form-control" id="uuid" name="uuid"/>
   <div class="form-group">
     <label for="" class="col-sm-1 control-label">Name<sup class="required">*</sup></label>
     <div class="col-sm-6">
@@ -421,7 +443,7 @@
   <div class="form-group">
     <label for="" class="col-sm-1 control-label">IP Address</label>
     <div class="col-sm-5 ">
-       <input class="form-control required" id="ip_address" name="ip_address" type="text">
+       <input class="form-control" id="ip_address" name="ip_address" type="text">
     </div>
     <label for="" class="col-sm-1 control-label">Port</label>
     <div class="col-sm-5 ">
@@ -459,18 +481,27 @@
        <input class="form-control" id="error_log_path" name="error_log_path" type="text">
     </div>
   </div>
-  				<div class="col-sm-12 margin-top-15 " align="CENTER">
-                <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
-                </div>
-   </div>
-	      
-             
-	      </div>
-             
-             </form>
-   </section>
-        <!-- right col -->
-      
+	<div class="form-group">
+   		<label for="" class="col-sm-1 control-label">Select Rules</label>
+    	<div class="col-sm-5 ">
+    		<input class="form-control" id="rules" name="rules" type="hidden">
+       		<select class="form-control" id="selected_rules" multiple></select>
+    	</div>
+    	<label for="" class="col-sm-1 control-label">Upstream</label>
+    	<div class="col-sm-5 ">
+    		<!--<input class="form-control" id="upstreams" name="upstreams" type="hidden">-->
+       		<select class="form-control" id="upstreams" name="upstreams"></select>
+    	</div>
+  	</div>
+  	
+  	<div class="col-sm-12 margin-top-15 " align="CENTER">
+		<input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
+     </div>
+</div>
+	</div>
+	</form>
+	</section>
+        <!-- right col -->    
   </div>
 	<footer class="main-footer">
 	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
@@ -480,6 +511,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
+var selectedRulesArr = '';
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -497,7 +529,7 @@ function getUrlVars() {
     });
     return vars;
 }
-function dataAsJson(name){
+	function dataAsJson(name){
 		var x = $("#"+name).serializeArray();
 		var outputObj = new Object();
     	$.each(x, function(i, field){
@@ -508,10 +540,20 @@ function dataAsJson(name){
     	return outputObj;
     }
 $(document).ready(function() {
-	$(".host_details_class").show();
-	if(getUrlVars() && getUrlVars()["host"]  && getUrlVars()["host"]!="") {
-		$("#name").val(getUrlVars()["host"]);
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key=host:"+getUrlVars()["host"],function(result){
+
+		// fetch upstreams
+		$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=upstream",function(result){
+			if(result.aaData && result.aaData.length>0){
+				var contentStr='<option value="">--Select--</option>';
+				$.each(result.aaData, function(i,row){
+					contentStr+='<option value="'+row.key+'">'+row.key+'</option>';
+				});
+				$("#upstreams").html(contentStr);
+			}
+		});
+
+	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -521,10 +563,40 @@ $(document).ready(function() {
 					if(key=="redirect_to_https"){
 						$("#redirect_to_https").prop("checked", true);
 					}
+					if(key=="rules"){
+						var selectedRulesArr = JSON.parse(value);
+						$("#selected_rules").val(selectedRulesArr);
+					}
+					/**if(key=="upstreams"){
+						var tempArr = JSON.parse(value);
+						$("#selected_upstreams").val(tempArr);
+						$("#selected_upstreams").selectmenu('refresh');
+					}**/
 				});
 			}
 		});
 	}
+	
+	// fetch rules
+		$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=rule",function(result){
+			if(result.aaData && result.aaData.length>0){
+				var contentStr='';
+				$.each(result.aaData, function(i,row){
+					var valueObj = JSON.parse(row.value);
+					if(typeof(valueObj)=="string"){
+						valueObj = JSON.parse(valueObj);
+					}
+					var selectedStr='';
+					if(jQuery.inArray( row.key , selectedRulesArr )!=-1){
+						selectedStr ='selected';
+					}
+					var displayStr= valueObj.rule_type+" "+valueObj.location;
+					contentStr+='<option value="'+row.key+'" '+selectedStr+'>'+displayStr+'</option>';
+				});
+				$("#selected_rules").html(contentStr);
+			}
+		});
+		
     $("#EntryForm").validate({
 		ignore: "",
 		onkeyup: false,
@@ -546,24 +618,29 @@ $(document).ready(function() {
 			root_path: { required: true }
 		},
 		submitHandler: function(form) {
-			//alert("Work in progress");
+			var selected_rules = $("#selected_rules").val();
+			$("#rules").val(JSON.stringify(selected_rules));
+			
+			//var selected_rules = $("#selected_upstreams").val();
+			//$("#upstreams").val(JSON.stringify(selected_rules));
+			
 			var tokenStr=$("#uuid").val();
 			if(tokenStr=="") {
 				var tokenStr=guid();
 				$("#uuid").val(tokenStr);
 			}
-			$("#unique_value").val($("#host_name").val());
 			var entry_form_data_obj = dataAsJson("EntryForm");
 			
+			var keyStr= "host:"+$("#host_name").val();
 			$.ajax({
 				url: 'https://dev.synergist.cloud/api_post_key',
 				type: 'POST',
-				data: entry_form_data_obj,
+				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,
 				dataType: 'json',
 				success: function(response){
 					if(response.success){
-						window.location.href = "/host.html?host="+$("#unique_value").val()+"&"+Math.random();
+						window.location.href = "/host.html?id="+keyStr+"&"+Math.random();
 					} else if(response.error) {
 						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 					}else {

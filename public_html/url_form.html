@@ -335,6 +335,30 @@
             </span>
           </a>
 		  </li>
+		  <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-list"></i> <span>Lists</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="lists.html"><i class="fa fa-circle-o"></i> Lists</a></li>
+           	<li class="active"><a href="list.html"><i class="fa fa-circle-o"></i> Add New List</a></li>
+          </ul>
+        </li>
+         <li class=" treeview">
+          <a href="#">
+            <i class=" fa fa-bank"></i> <span>Hosts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
+           	<li class="active"><a href="host.html"><i class="fa fa-circle-o"></i> Add New Host</a></li>
+          </ul>
+        </li>
         <li class=" treeview">
           <a href="#">
             <i class=" fa fa-list"></i> <span>Rules</span>
@@ -356,7 +380,6 @@
           </a>
           <ul class="treeview-menu">
             <li class="active"><a href="sites.html"><i class="fa fa-circle-o"></i> List Sites</a></li>
-            <li class="active"><a href="hosts.html"><i class="fa fa-circle-o"></i> List Hosts</a></li>
            	<li class="active"><a href="site.html"><i class="fa fa-circle-o"></i> Add New Site</a></li>
           </ul>
         </li>
@@ -380,7 +403,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="list1.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
+            <li class="active"><a href="urls.html"><i class="fa fa-circle-o"></i> List Urls </a></li>
            	<li class="active"><a href="url_form.html"><i class="fa fa-circle-o"></i> Add New Url</a></li>
           </ul>
         </li>
@@ -485,9 +508,8 @@ function getUrlVars() {
 }
 
     $(document).ready(function() {
-		if(getUrlVars() && getUrlVars()["token"]  && getUrlVars()["token"]!="") {
-			$("#uuid").val(getUrlVars()["token"]);
-			$.getJSON("https://dev.synergist.cloud/api_get_key?key=url:"+getUrlVars()["token"],function(result){
+		if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
+			$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 				if(result.success && result.aaData && result.aaData.length>0){
 					$("#pageHeadingID").html("Edit");
 					var aaDataStr= result.aaData;
@@ -497,6 +519,9 @@ function getUrlVars() {
 					}
 					if(aaDataObj.service && aaDataObj.service!="")	{
 						$("#service").val(aaDataObj.service);
+					}
+					if(aaDataObj.uuid && aaDataObj.uuid!="")	{
+						$("#uuid").val(aaDataObj.uuid);
 					}
 					if(aaDataObj.oauth && aaDataObj.oauth!="")	{
 						$("#auth").val(aaDataObj.oauth);
@@ -530,15 +555,17 @@ function getUrlVars() {
 				if(tokenStr=="") {
 					var tokenStr=guid();
 				}
+				var saveValueStr = { "uuid":tokenStr, "link":$("#link").val(), "service": $("#service").val()}; 
+				var outputJSON = JSON.stringify(saveValueStr); 
 							$.ajax({
 url: 'https://dev.synergist.cloud/api_post_key',
 type: 'POST',
-data: {"link" : $("#link").val(),"unique_prefix":"url", "unique_value" : tokenStr, "service" : $("#service").val(), "uuid" : tokenStr},
+data: {"value" : outputJSON, "key" : "url:"+tokenStr},
 contentType: false,
 dataType: 'json',
 success: function(response){
 									if(response.success){
-										window.location.href = "/url_form.html?token="+tokenStr;
+										window.location.href = "/url_form.html?id=url:"+tokenStr;
 									} else if(response.error) {
 										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 									}else {
