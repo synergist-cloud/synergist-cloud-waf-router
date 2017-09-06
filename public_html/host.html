@@ -487,11 +487,6 @@
     		<input class="form-control" id="rules" name="rules" type="hidden">
        		<select class="form-control" id="selected_rules" multiple style="height:150px;"></select>
     	</div>
-    	<label for="" class="col-sm-1 control-label">Upstream</label>
-    	<div class="col-sm-5 ">
-    		<!--<input class="form-control" id="upstreams" name="upstreams" type="hidden">-->
-       		<select class="form-control" id="upstreams" name="upstreams"></select>
-    	</div>
   	</div>
   	
   	<div class="col-sm-12 margin-top-15 " align="CENTER">
@@ -512,46 +507,7 @@
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
 var selectedRulesArr = '';
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-    function(m,key,value) {
-      vars[key] = value;
-    });
-    return vars;
-}
-	function dataAsJson(name){
-		var x = $("#"+name).serializeArray();
-		var outputObj = new Object();
-    	$.each(x, function(i, field){
-    		if(field.value!=""){
-    			outputObj[field.name]   = field.value;
-    		}
-     	});
-    	return outputObj;
-    }
 $(document).ready(function() {
-
-		// fetch upstreams
-		$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=upstream",function(result){
-			if(result.aaData && result.aaData.length>0){
-				var contentStr='<option value="">--Select--</option>';
-				$.each(result.aaData, function(i,row){
-					contentStr+='<option value="'+row.key+'">'+row.key+'</option>';
-				});
-				$("#upstreams").html(contentStr);
-			}
-		});
-
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
@@ -567,18 +523,13 @@ $(document).ready(function() {
 						var selectedRulesArr = JSON.parse(value);
 						$("#selected_rules").val(selectedRulesArr);
 					}
-					/**if(key=="upstreams"){
-						var tempArr = JSON.parse(value);
-						$("#selected_upstreams").val(tempArr);
-						$("#selected_upstreams").selectmenu('refresh');
-					}**/
 				});
 			}
 		});
 	}
 	
 	// fetch rules
-		$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=rule",function(result){
+		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=rule",function(result){
 			if(result.aaData && result.aaData.length>0){
 				var contentStr='';
 				$.each(result.aaData, function(i,row){
@@ -621,9 +572,6 @@ $(document).ready(function() {
 			var selected_rules = $("#selected_rules").val();
 			$("#rules").val(JSON.stringify(selected_rules));
 			
-			//var selected_rules = $("#selected_upstreams").val();
-			//$("#upstreams").val(JSON.stringify(selected_rules));
-			
 			var tokenStr=$("#uuid").val();
 			if(tokenStr=="") {
 				var tokenStr=guid();
@@ -655,5 +603,6 @@ $(document).ready(function() {
 </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
+<script src="js/custom.js"></script>
 </body>
 </html>

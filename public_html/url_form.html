@@ -489,25 +489,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-    function(m,key,value) {
-      vars[key] = value;
-    });
-    return vars;
-}
-
-    $(document).ready(function() {
+	$(document).ready(function() {
 		if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 			$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 				if(result.success && result.aaData && result.aaData.length>0){
@@ -558,12 +540,12 @@ function getUrlVars() {
 				var saveValueStr = { "uuid":tokenStr, "link":$("#link").val(), "service": $("#service").val()}; 
 				var outputJSON = JSON.stringify(saveValueStr); 
 							$.ajax({
-url: 'https://dev.synergist.cloud/api_post_key',
-type: 'POST',
-data: {"value" : outputJSON, "key" : "url:"+tokenStr},
-contentType: false,
-dataType: 'json',
-success: function(response){
+								url: 'https://dev.synergist.cloud/api_post_key',
+								type: 'POST',
+								data: {"value" : outputJSON, "key" : "url:"+tokenStr},
+								contentType: false,
+								dataType: 'json',
+								success: function(response){
 									if(response.success){
 										window.location.href = "/url_form.html?id=url:"+tokenStr;
 									} else if(response.error) {
@@ -578,10 +560,9 @@ success: function(response){
 
       
     });
-  </script>
-
-  <script src="js/basictable.js"></script>
+</script>
+<script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
+<script src="js/custom.js"></script>
 </body>
 </html>

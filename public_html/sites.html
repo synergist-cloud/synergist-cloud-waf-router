@@ -437,7 +437,6 @@
                                             <th>UNIQUE KEY</th>
                                             <th>SITE NAME</th><th>SITE CODE</th>
                                             <th>HOSTS</th>
-                                            <th>NO OF RULES DEFINED</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -446,7 +445,6 @@
                                             <th>UNIQUE KEY</th>
                                             <th>SITE NAME</th><th>SITE CODE</th>
                                             <th>HOSTS</th>
-                                            <th>NO OF RULES DEFINED</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </tfoot>
@@ -471,8 +469,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
- 	//$.getJSON("api_fetch_sites.json",function(html){
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=site",function(html){
+ 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=site",function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){
@@ -484,24 +481,20 @@ $(document).ready(function() {
 				drawContentStr+='<td>'+valueObj.name+'</td><td>'+valueObj.code+'</td>';
 				if(valueObj.hosts && valueObj.hosts!=""){
 					var tempHostsArr = JSON.parse(valueObj.hosts), tempHostNameStr='';
-					$.each(tempHostsArr, function(h_i,h_row){
-						if(tempHostNameStr!="")	{
-							tempHostNameStr += ", "+h_row.host_name;
-						}else{
-							tempHostNameStr += h_row.host_name; 
-						}
-					});
+					if(tempHostsArr.length>0){
+    					for(var i=0; i<tempHostsArr.length; i++){
+							if(tempHostNameStr!="") {       
+	   							tempHostNameStr +=", "+tempHostsArr[i];
+							} else {			
+								tempHostNameStr +=tempHostsArr[i];
+        					}
+    					}
+					}
 					drawContentStr+='<td>'+tempHostNameStr+'</td>';
 				}	else {
 					drawContentStr+='<td></td>';
 				}
-				if(valueObj.rules && valueObj.rules!=""){
-					var tempRulesArr = JSON.parse(valueObj.rules);
-					drawContentStr+='<td>'+tempRulesArr.length+'</td>';
-				}	else {
-					drawContentStr+='<td></td>';
-				}
-				drawContentStr+='<td><a href="site.html?code='+valueObj.code+'" title="Edit"><i class="fa fa-edit"></i></a></td>';
+				drawContentStr+='<td><a href="site.html?code='+valueObj.code+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
 				drawContentStr+='</tr>';
 			});
 			$('#display_content').html(drawContentStr);
@@ -514,6 +507,6 @@ $(document).ready(function() {
   </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
+<script src="js/custom.js"></script>
 </body>
 </html>

@@ -434,19 +434,24 @@
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
                <input type="hidden" class="form-control" name="uuid" id="uuid"/>
-  <div class="form-group">
-    <label for="" class="col-sm-2 control-label">Type<sup class="required">*</sup></label>
-    <div class="col-sm-5 ">
-       <select class="form-control required" id="rule_type" name="rule_type">
-       </select>
+	<div class="form-group">
+    	<label for="" class="col-sm-2 control-label">Type<sup class="required">*</sup></label>
+    	<div class="col-sm-5 ">
+       		<select class="form-control required" id="rule_type" name="rule_type"></select>
+    	</div>
     </div>
-    </div>
-  <div class="form-group">
+  <div class="form-group" id="condition_ui">
     <label for="" class="col-sm-2 control-label">Location/condition<sup class="required">*</sup></label>
     <div class="col-sm-5 ">
        <input class="form-control required" id="location" placeholder="Location" name="location" type="text">
     </div>
   </div>
+	<div class="form-group rule_defined_ui static_content" style="display:none;">
+    	<label for="" class="col-sm-2 control-label">Static Content</label>
+    	<div class="col-sm-5 ">
+       		<select class="form-control" id="static_content" name="static_content"></select>
+    	</div>
+    </div>
   <div class="form-group rule_defined_ui static_content" style="display:none;">
     <label for="" class="col-sm-2 control-label">Root Path</label>
     <div class="col-sm-6 ">
@@ -479,12 +484,17 @@
        </select>
     </div>
   </div>
-  <div class="form-group rule_defined_ui proxy_pass" style="display:none;">
-    <label for="" class="col-sm-2 control-label">Proxy Pass</label>
-    <div class="col-sm-6 ">
-       <input class="form-control" id="proxy_pass" name="proxy_pass" type="text">
-    </div>
-  </div>
+	<div class="form-group rule_defined_ui proxy_pass" style="display:none;">
+    	<label for="" class="col-sm-2 control-label">Proxy Pass</label>
+    	<div class="col-sm-4">
+       		<input class="form-control" id="proxy_pass" name="proxy_pass" type="text">
+    	</div>
+    	<label for="" class="col-sm-1 control-label" style="width:2px;">Or</label>
+    	<label for="" class="col-sm-1 control-label">Upstream</label>
+    	<div class="col-sm-4">
+    		<select class="form-control" id="upstreams" name="upstreams"></select>
+    	</div>
+  	</div>
 	<div class="form-group rule_defined_ui proxy_pass static_content" style="display:none;">
 		<label for="" class="col-sm-2 control-label"></label>
     	<div class="col-sm-3">
@@ -538,35 +548,8 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-    function(m,key,value) {
-      vars[key] = value;
-    });
-    return vars;
-}
-
-$(document).ready(function() {
-	$("#rule_type").change(function(){
-		$(".rule_defined_ui").hide();
-		var s_val= $(this).val();
-		if(s_val!=""){
-			$("."+s_val).show();
-		}
-	});
-	
-		// fetch rules type
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key=list:rule-type",function(result){
+	function fetch_list_details(fetch_list, display_id){
+		$.getJSON("https://dev.synergist.cloud/api_get_key?key=list:"+fetch_list,function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				var aaDataStr= result.aaData;
 				var aaDataObj = JSON.parse(aaDataStr);
@@ -577,11 +560,44 @@ $(document).ready(function() {
 						$.each(subDataObj, function(i,row){
 							contentStr+='<option value="'+row.value+'">'+row.label+'</option>';
 						});
-						$("#rule_type").html(contentStr);
+						$("#"+display_id).html(contentStr);
 					}
 				});
 			}
 		});
+	}
+$(document).ready(function() {
+		// fetch upstreams
+		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=upstream",function(result){
+			if(result.aaData && result.aaData.length>0){
+				var contentStr='<option value="">--Select--</option>';
+				$.each(result.aaData, function(i,row){
+					contentStr+='<option value="'+row.key+'">'+row.key+'</option>';
+				});
+				$("#upstreams").html(contentStr);
+			}
+		});
+		
+	$("#upstreams").change(function(){
+		$("#proxy_pass").val("http://"+$(this).val());
+	});
+	
+	$("#rule_type").change(function(){
+		$("#condition_ui").show();
+		$(".rule_defined_ui").hide();
+		var s_val= $(this).val();
+		if(s_val!=""){
+			$("."+s_val).show();
+		}
+		if(s_val=="static_content"){
+			$("#condition_ui").hide();
+			fetch_list_details("static-content", "static_content");
+		}
+	});
+	
+		// fetch rules type
+		fetch_list_details("rule-type", "rule_type");
+		
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
@@ -593,6 +609,9 @@ $(document).ready(function() {
 					if(key=="rule_type"){
 						$("#rule_type").trigger("change");
 					}
+					if(key=="upstreams"){
+						$("#upstreams").trigger("change");
+					}
 					if(key=="enable_cache"){
 						$("#enable_cache").prop("checked", true);
 					}
@@ -603,16 +622,7 @@ $(document).ready(function() {
 			}
 		});
 	}
-	function dataAsJson(name){
-		var x = $("#"+name).serializeArray();
-		var outputObj = new Object();
-    	$.each(x, function(i, field){
-    		if(field.value!=""){
-    			outputObj[field.name]   = field.value;
-    		}
-     	});
-    	return outputObj;
-    }
+	
     $("#EntryForm").validate({
 		ignore: "",
 		onkeyup: false,
@@ -664,5 +674,6 @@ $(document).ready(function() {
 </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
+<script src="js/custom.js"></script>
 </body>
 </html>

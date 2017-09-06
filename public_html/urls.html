@@ -496,7 +496,7 @@ function dateTimeFromUnix(UNIX_timestamp){
 }
 
 $(document).ready(function() {
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?prefix=url",function(html){
+ 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=url",function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){
@@ -508,7 +508,7 @@ $(document).ready(function() {
 				if(valueObj.oauth){
 					drawContentStr+=valueObj.oauth;
 				}
-				drawContentStr+='</td><td>'+dateTimeFromUnix(valueObj.modified)+'</td><td><a href="url_form.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a></td></tr>';
+				drawContentStr+='</td><td>'+dateTimeFromUnix(valueObj.modified)+'</td><td><a href="url_form.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td></tr>';
 			});
 			$('#display_content').html(drawContentStr);
 		}
@@ -520,6 +520,6 @@ $(document).ready(function() {
   </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
-
+<script src="js/custom.js"></script>
 </body>
 </html>

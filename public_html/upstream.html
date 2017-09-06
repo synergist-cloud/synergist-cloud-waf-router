@@ -581,23 +581,6 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-    function(m,key,value) {
-      vars[key] = value;
-    });
-    return vars;
-}
 function remove_sub_item(e){
 	if(e!=""){
 		$(".parameterstr_"+e).closest('tr').remove();
@@ -752,16 +735,6 @@ $(document).ready(function() {
 			}
 		});
 	}
-	function dataAsJson(name){
-		var x = $("#"+name).serializeArray();
-		var outputObj = new Object();
-    	$.each(x, function(i, field){
-    		if(field.value!=""){
-    			outputObj[field.name]   = field.value;
-    		}
-     	});
-    	return outputObj;
-    }
     $("#EntryForm").validate({
 		ignore: "",
 		onkeyup: false,
@@ -814,5 +787,6 @@ $(document).ready(function() {
 </script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
+<script src="js/custom.js"></script>
 </body>
 </html>
