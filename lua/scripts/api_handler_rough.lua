@@ -238,7 +238,7 @@ server {
                             return
                          end
 
-			 local prefix_str = ngx.var.arg_prefix or ""
+			 local prefix_str = ngx.var.arg_search or ""
 			 if( prefix_str~="" ) then
 			     prefix_str = prefix_str..'*'
 			 else
