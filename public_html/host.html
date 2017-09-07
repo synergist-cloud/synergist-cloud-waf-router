@@ -481,13 +481,35 @@
        <input class="form-control" id="error_log_path" name="error_log_path" type="text">
     </div>
   </div>
-	<div class="form-group">
-   		<label for="" class="col-sm-1 control-label">Select Rules</label>
-    	<div class="col-sm-5 ">
-    		<input class="form-control" id="rules" name="rules" type="hidden">
-       		<select class="form-control" id="selected_rules" multiple style="height:150px;"></select>
-    	</div>
-  	</div>
+  	<div CLASS="ROW ">
+									<div CLASS="col-md-12 itemsContent">
+										<span style="float:right; font-weight:bold;">
+											<button type="button" class="btn btn-info" data-toggle="modal" data-target="#addNewItemModal" style="margin-bottom: 10px;">+ Add new Item</button>
+										</span>
+									</div>
+									</div>
+								<div CLASS="row">
+  									<div class="itemsContent col-md-12" id="itemsTable">
+    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Selected Rules</label>
+    									<input type="hidden" id="rules" name="rules" value="">
+										<div CLASS="table-responsive">
+										   	<table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint">
+												<thead>
+												  <tr class="item">
+												  	  <th>Rule</th>
+												  	  <th>Sort Order</th><th>Active</th>
+													  <th colspan="2" align="center">Actions</th>
+												  </tr>
+											  </thead>
+											  <tbody id="link_items">
+											  
+											  </tbody>
+											</table>
+											<span style="float:right;font-size:12px;font-style:italic;color:#d9534f">Note: Please submit the form to save the changes!</span>
+										</div>
+											
+									</div>
+									</div>
   	
   	<div class="col-sm-12 margin-top-15 " align="CENTER">
 		<input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
@@ -496,7 +518,58 @@
 	</div>
 	</form>
 	</section>
-        <!-- right col -->    
+        <!-- right col -->  
+<div class="modal fade" id="addNewItemModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal" onClick="resetItemForm()">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Item
+                </h4>
+            </div>
+			
+			<style>
+			.form-group {
+				margin-bottom: 15px;
+    			overflow: hidden;
+			}
+			</style>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+            	<div class="form-group" id="messageId">
+                    <label for="item_label"><strong>Select Rules</strong><span class="f_req">*</span></label>
+                      <select class="form-control" id="item_rule"></select>
+                      <input type="hidden" class="form-control" id="item_uuid"/>
+                  </div>
+                  <div class="form-group" style="margin-top:5px;">
+                 	<label><span for="item_type"><strong>Sort Order</strong></span></label>
+                	<input type="text" class="form-control" id="item_sort_order" value=""/>
+                  </div>
+                  <div class="form-group" style="margin-top:5px;">
+                 	<label><input type="checkbox" id="item_active" value="1"> Active</label>
+                  </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="resetItemForm()">
+                	Close
+                </button>
+                <button type="button" class="btn btn-primary" onClick="savelinkitem()">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+  
   </div>
 	<footer class="main-footer">
 	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
@@ -506,7 +579,87 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
-var selectedRulesArr = '';
+function generateObjectJson(){
+	var createArr=new Array();
+	var i=0;
+	$('.itemClass').each(function(){
+		var createObject={};
+		var uuid=$(this).find('#list_uuid').val();
+  		createObject['uuid']=$(this).find('#list_uuid').val();
+  		createObject['rule']=$(this).find('#ruleField').val();
+  		createObject['sort_order']=$(this).find('#sortOrderField').val();
+  		createObject['active']=$(this).find('#activeField').val();
+  		createArr[i]=createObject;
+  		i++;
+  	});
+  	$("#rules").val(JSON.stringify(createArr));
+}
+
+function remove_item(e){
+	if(e!=""){
+		$(".itemtr_"+e).parents('.itemClass').remove();
+	}
+}
+
+function edit_item(e){
+	if(e!=""){
+		var row= $(".itemtr_"+e).parents('.itemClass');	
+		$("#item_uuid").val(e);
+		$("#item_rule").val(row.find('#ruleField').val());
+		$("#item_sort_order").val(row.find('#sortOrderField').val());
+		if(row.find('#activeField').val()==1){
+			$("#item_active").prop('checked', true);
+		}
+		$('#addNewItemModal').modal('show'); 
+	}
+}
+
+function savelinkitem(){
+	$("#msgSpan").remove();
+	var item_uuid=$("#item_uuid").val();
+	var item_rule = $("#item_rule").val();
+	var item_sort_order=$("#item_sort_order").val();
+	var item_active=0;
+	if($('#item_active').is(":checked")){
+		item_active=1;
+	}
+	if(item_rule!=""){
+		var newEntryFlag=false;
+			if(item_uuid==""){
+				item_uuid=guid();
+				newEntryFlag=true;
+			}
+			var subHTMLSTR='<td><input type="hidden" value="'+item_uuid+'" id="list_uuid"><input class="itemtr_'+item_uuid+'" id="ruleField" type="hidden" value="'+item_rule+'">'+item_rule+'</td>';
+				subHTMLSTR+='<td><input id="sortOrderField" type="hidden" value="'+item_sort_order+'">'+item_sort_order+'</td>';
+				subHTMLSTR+='<td><input id="activeField" type="hidden" value="'+item_active+'">'+item_active+'</td>';
+				subHTMLSTR+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+item_uuid+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+item_uuid+'\')" title="Remove"><i class="fa fa-trash"></i></a></td>';
+			
+			if(newEntryFlag){
+				var htmlStr='<tr class="itemClass">'+subHTMLSTR+'</tr>';
+				$("#link_items").append(htmlStr);
+			}else{
+				var htmlStr=subHTMLSTR;
+				$(".item_"+item_uuid).html(htmlStr);
+			}
+			generateObjectJson();
+			$('#addNewItemModal').modal('hide');
+			$('#table-breakpoint').basictable('destroy');
+			$('#table-breakpoint').basictable({
+        		breakpoint: 751
+   			});
+			resetItemForm();			
+	}else{
+		$("#messageId").before('<span id="msgSpan" style="color:#CC0000;">Please add the required field!</span>');
+	}	
+}		
+		
+function resetItemForm(){
+	$("#msgSpan").remove();
+	$("#item_uuid").val("");
+	$("#item_rule").val("");
+	$("#item_sort_order").val('');
+	$("#item_active").prop('checked', false);
+}
 $(document).ready(function() {
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
@@ -520,14 +673,26 @@ $(document).ready(function() {
 						$("#redirect_to_https").prop("checked", true);
 					}
 					if(key=="rules"){
-						var selectedRulesArr = JSON.parse(value);
-						$("#selected_rules").val(selectedRulesArr);
+						var contentStr='';
+						$.each(JSON.parse(value), function(i,row){
+							var uuidStr=guid();
+							if(row.uuid && row.uuid!=""){
+								uuidStr= row.uuid;
+							}
+							contentStr+="<tr class='itemClass'><td><input type='hidden' id='list_uuid' value='"+uuidStr+"'><input class='itemtr_"+uuidStr+"' type='hidden' id='ruleField' value='"+row.rule+"'>"+row.rule+"</td>";
+    						contentStr+="<td><input type='hidden' id='sortOrderField' value='"+row.sort_order+"'>"+row.sort_order+"</td>";
+    						contentStr+="<td><input type='hidden' id='activeField' value='"+row.active+"'>"+row.active+"</td>";
+    						contentStr+='<td><a href="javascript:void(0)" title="Edit" onClick="edit_item(\''+uuidStr+'\')"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onClick="remove_item(\''+uuidStr+'\')" title="Remove"><i class="fa fa-trash"></i></a></td></tr>';
+						});
+						$("#link_items").html(contentStr);
 					}
 				});
 			}
 		});
 	}
-	
+			$('#table-breakpoint').basictable({
+        		breakpoint: 751
+   			});
 	// fetch rules
 		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=rule",function(result){
 			if(result.aaData && result.aaData.length>0){
@@ -538,13 +703,11 @@ $(document).ready(function() {
 						valueObj = JSON.parse(valueObj);
 					}
 					var selectedStr='';
-					if(jQuery.inArray( row.key , selectedRulesArr )!=-1){
-						selectedStr ='selected';
-					}
+					
 					var displayStr= valueObj.rule_type+" "+valueObj.location;
 					contentStr+='<option value="'+row.key+'" '+selectedStr+'>'+displayStr+'</option>';
 				});
-				$("#selected_rules").html(contentStr);
+				$("#item_rule").html(contentStr);
 			}
 		});
 		
@@ -569,8 +732,7 @@ $(document).ready(function() {
 			root_path: { required: true }
 		},
 		submitHandler: function(form) {
-			var selected_rules = $("#selected_rules").val();
-			$("#rules").val(JSON.stringify(selected_rules));
+			generateObjectJson();
 			
 			var tokenStr=$("#uuid").val();
 			if(tokenStr=="") {
