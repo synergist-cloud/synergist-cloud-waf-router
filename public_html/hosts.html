@@ -478,7 +478,12 @@ $(document).ready(function() {
 				if(typeof(valueObj)=="string"){
 					valueObj = JSON.parse(valueObj);
 				}
-				drawContentStr+='<td>'+valueObj.host_name+'</td><td>'+valueObj.ip_address+'</td>';
+				drawContentStr+='<td>'+valueObj.host_name+'</td>';
+				if(valueObj.ip_address){
+					drawContentStr+='<td>'+valueObj.ip_address+'</td>';
+				}else{
+					drawContentStr+='<td></td>';
+				}
 				drawContentStr+='<td><a href="host.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
 				drawContentStr+='</tr>';
 			});

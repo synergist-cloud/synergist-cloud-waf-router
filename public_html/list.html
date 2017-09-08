@@ -621,7 +621,7 @@ function savelinkitem(){
 				$("#link_items").append(htmlStr);
 			}else{
 				var htmlStr=subHTMLSTR;
-				$(".item_"+item_uuid).html(htmlStr);
+				$(".itemtr_"+item_uuid).parents('.itemClass').html(htmlStr);
 			}
 			generateObjectJson();
 			$('#addNewItemModal').modal('hide');
