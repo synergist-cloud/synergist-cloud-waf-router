@@ -477,7 +477,7 @@ var selectedHosts = '';
 $(document).ready(function() {		
 	if(getUrlVars() && getUrlVars()["code"]  && getUrlVars()["code"]!="") {
 		$("#code").val(getUrlVars()["code"]);
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key=site:"+getUrlVars()["code"],function(result){
+		$.getJSON("/api_get_key?key=site:"+getUrlVars()["code"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -494,7 +494,7 @@ $(document).ready(function() {
 	}
 	
 	// fetch hosts
-		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=host",function(result){
+		$.getJSON("/api_fetch_list?search=host",function(result){
 			if(result.aaData && result.aaData.length>0){
 				var contentStr='<option value="">--Select--</option>';
 				$.each(result.aaData, function(i,row){
@@ -540,7 +540,7 @@ $(document).ready(function() {
 			var entry_form_data_obj = dataAsJson("EntryForm");
 			var keyStr= "site:"+$("#code").val();
 			$.ajax({
-				url: 'https://dev.synergist.cloud/api_post_key',
+				url: '/api_post_key',
 				type: 'POST',
 				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,

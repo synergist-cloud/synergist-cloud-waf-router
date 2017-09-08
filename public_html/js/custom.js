@@ -1,7 +1,7 @@
 function delete_key(unique_id){
 	var r = confirm("Are you sure to delete?");
 	if (r == true) {
-		$.getJSON("https://dev.synergist.cloud/api_delete_key?key="+unique_id,function(html){
+		$.getJSON("/api_delete_key?key="+unique_id,function(html){
 			if(html.success){
 				location.reload();
 			}else{

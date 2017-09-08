@@ -639,7 +639,7 @@ function savelinkitem(){
 				$("#link_items").append(htmlStr);
 			}else{
 				var htmlStr=subHTMLSTR;
-				$(".item_"+item_uuid).html(htmlStr);
+				$(".itemtr_"+item_uuid).parents('.itemClass').html(htmlStr);
 			}
 			generateObjectJson();
 			$('#addNewItemModal').modal('hide');
@@ -662,7 +662,7 @@ function resetItemForm(){
 }
 $(document).ready(function() {
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
+		$.getJSON("/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -694,7 +694,7 @@ $(document).ready(function() {
         		breakpoint: 751
    			});
 	// fetch rules
-		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=rule",function(result){
+		$.getJSON("/api_fetch_list?search=rule",function(result){
 			if(result.aaData && result.aaData.length>0){
 				var contentStr='';
 				$.each(result.aaData, function(i,row){
@@ -743,7 +743,7 @@ $(document).ready(function() {
 			
 			var keyStr= "host:"+$("#host_name").val();
 			$.ajax({
-				url: 'https://dev.synergist.cloud/api_post_key',
+				url: '/api_post_key',
 				type: 'POST',
 				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,

@@ -549,7 +549,7 @@
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
 	function fetch_list_details(fetch_list, display_id){
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key=list:"+fetch_list,function(result){
+		$.getJSON("/api_get_key?key=list:"+fetch_list,function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				var aaDataStr= result.aaData;
 				var aaDataObj = JSON.parse(aaDataStr);
@@ -568,7 +568,7 @@
 	}
 $(document).ready(function() {
 		// fetch upstreams
-		$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=upstream",function(result){
+		$.getJSON("/api_fetch_list?search=upstream",function(result){
 			if(result.aaData && result.aaData.length>0){
 				var contentStr='<option value="">--Select--</option>';
 				$.each(result.aaData, function(i,row){
@@ -599,7 +599,7 @@ $(document).ready(function() {
 		fetch_list_details("rule-type", "rule_type");
 		
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
+		$.getJSON("/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -652,7 +652,7 @@ $(document).ready(function() {
 			var entry_form_data_obj = dataAsJson("EntryForm");
 			var keyStr= "rule:"+tokenStr;
 			$.ajax({
-				url: 'https://dev.synergist.cloud/api_post_key',
+				url: '/api_post_key',
 				type: 'POST',
 				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,

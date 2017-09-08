@@ -469,7 +469,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
- 	$.getJSON("https://dev.synergist.cloud/api_fetch_list?search=site",function(html){
+ 	$.getJSON("/api_fetch_list?search=site",function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){

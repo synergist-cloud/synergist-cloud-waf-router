@@ -703,7 +703,7 @@ $(document).ready(function() {
 	});
 	
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
-		$.getJSON("https://dev.synergist.cloud/api_get_key?key="+getUrlVars()["id"],function(result){
+		$.getJSON("/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
 				$("#pageHeadingID").html("Edit");
 				var aaDataStr= result.aaData;
@@ -765,7 +765,7 @@ $(document).ready(function() {
 			var entry_form_data_obj = dataAsJson("EntryForm");
 			var keyStr= "upstream:"+$("#name").val();
 			$.ajax({
-				url: 'https://dev.synergist.cloud/api_post_key',
+				url: '/api_post_key',
 				type: 'POST',
 				data: { "key" : keyStr, "value" : JSON.stringify(entry_form_data_obj) },
 				contentType: false,
