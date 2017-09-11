@@ -326,7 +326,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu" id="main_menu_ui"">
+    <ul class="sidebar-menu" id="main_menu_ui"">
       
         <li class="active treeview">
           <a href="index.html">
@@ -418,11 +418,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-		Rules <small>List</small>
+		Templates <small>List</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Rules List</li>
+        <li class="active">Templates List</li>
       </ol>
     </section>
 
@@ -435,16 +435,16 @@
                                     <thead>
                                         <tr>
                                             <th>UNIQUE KEY</th>
-                                            <th>RULE TYPE</th>
-                                            <th>LOCATION</th>
+                                            <th>NAME</th><th>CODE</th>
+                                            <th>STATUS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
                                      <tfoot>
                                         <tr>
                                             <th>UNIQUE KEY</th>
-                                            <th>RULE TYPE</th>
-                                            <th>LOCATION</th>
+                                            <th>NAME</th><th>CODE</th>
+                                            <th>STATUS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </tfoot>
@@ -469,7 +469,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
- 	$.getJSON("/api_fetch_list?search=rule",function(html){
+ 	$.getJSON("/api_fetch_list?search=template",function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){
@@ -478,8 +478,13 @@ $(document).ready(function() {
 				if(typeof(valueObj)=="string"){
 					valueObj = JSON.parse(valueObj);
 				}
-				drawContentStr+='<td>'+valueObj.rule_type+'</td><td>'+valueObj.location+'</td>';
-				drawContentStr+='<td><a href="rule.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
+				drawContentStr+='<td>'+valueObj.name+'</td><td>'+valueObj.code+'</td>';
+				if(valueObj.status && valueObj.status=="1"){
+					drawContentStr+='<td><span class="label label-success">Active</span></td>';
+				}	else {
+					drawContentStr+='<td><span class="label label-danger">Inactive</span></td>';
+				}
+				drawContentStr+='<td><a href="template.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
 				drawContentStr+='</tr>';
 			});
 			$('#display_content').html(drawContentStr);

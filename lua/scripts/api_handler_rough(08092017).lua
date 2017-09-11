@@ -63,62 +63,16 @@ init_by_lua '
    end
 ';
 server {
-    listen	*:80 default_server;
-    default_type 'text/html';
+    listen       *:80 default_server;
+    server_name  dev.synergist.cloud;
 
-    location / {
-        resolver                  8.8.8.8 valid=300s;
-	set $target '';
-	access_by_lua '
-	   local host_name_str = ngx.var.host
+    return 301 https://dev.synergist.cloud/;
+    break;
 
-	   local db = connect_db()
-           if db == nil then
-	      return ngx.exit(500)
-	   end
-	   local res = get_key(db, "host:"..host_name_str)
-
-	   if( res and res["aaData"] and res["aaData"] ~= "") then
-	       local host_data_arr = cjson.decode(res["aaData"])
-
-	       local rule_to_process = ""
-	       if( host_data_arr and host_data_arr["rules"] and host_data_arr["rules"] ~="" ) then
-	       	   local rulesArr = cjson.decode(host_data_arr["rules"])
-		   local i = 1
-
-		   --work in progress for this loop
-		   while ( i <= table.getn(rulesArr) ) do
-		   	 if ((rulesArr[i].active == 1 or rulesArr[i].active == "1") and (rulesArr[i].sort_order == 1 or rulesArr[i].sort_order == "1")) then
-			       rule_to_process = rulesArr[i].rule
-			       break
-			 end 
-
-			 i = i + 1
-		   end
-	       end
-
-	       if ( rule_to_process ~= "" )  then
-	       	  local rule_res = get_key(db, rule_to_process) 
-		  if( rule_res and rule_res["aaData"] and rule_res["aaData"] ~= "") then
-		      local rule_data_arr = cjson.decode(rule_res["aaData"])
-		      if( rule_data_arr and rule_data_arr["rule_type"] and rule_data_arr["rule_type"] =="proxy_pass" and rule_data_arr["proxy_pass"] and rule_data_arr["proxy_pass"] ~="" ) then
-		      	  ngx.var.target = rule_data_arr["proxy_pass"]  
-		      end
-		  end
-	       else
-	          return ngx.redirect("http://webcrm.io/")
-	       end
-	   else
-		return ngx.redirect("http://webcrm.io/")
-	   end
-	   close_db(db)
-	';
-    	proxy_pass $target;
-    }
 }
 
 server {
-    listen       *:8081;
+    listen       *:443 default_server;
     server_name  dev.synergist.cloud;
     default_type 'text/html';
     
@@ -139,38 +93,6 @@ server {
 
         resolver                  8.8.8.8 valid=300s;
 
-    location /test {
-      	content_by_lua_block {
-	   ngx.say(ngx.var.host)
-	   local args = ngx.req.get_uri_args()
-	   for key, val in pairs(args) do
-	       ngx.say(key.." : "..val)
-	   end
-	}
-    }	
-    location /api_set {
-    	content_by_lua_block {
-	   local outputData = {}
-	   local key_str = ngx.var.arg_key or ""
-	   local value_str = ngx.var.arg_value or ""
-	   if( key_str ~= "" and value_str ~= "" )
-           then
-		local db = connect_db()
-                if db == nil then
-                   outputData['error'] = "Failed to connect to database"
-                   ngx.say(cjson.encode(outputData))
-                   return
-                end
-		local res = set_key(db, key_str, value_str)
-		ngx.say(cjson.encode(res))
-
-		close_db(db)
-		return
-	   else
-		ngx.say("Please pass the required parameters")
-	   end
-	}   
-    }
     location /api_post_key {
        content_by_lua_block {
            local outputData = {}
@@ -220,8 +142,8 @@ server {
 	location /api_set_key {
             content_by_lua_block {
 		local outputData = {}
-		local key_str = ngx.var.arg_key or ""
-		local value_str = ngx.var.arg_value or ""
+		local key_str = ""
+		local value_str = ""
 		local args = ngx.req.get_uri_args()
 		for key, val in pairs(args) do
 		    if key == "key" then
@@ -230,7 +152,6 @@ server {
 		       value_str = val
 		    end
 		end
-
 		if( key_str ~= "" and value_str ~= "" )
                 then
 		    local inputContentStr = cjson.decode(value_str)
@@ -255,8 +176,7 @@ server {
 			outputData['error'] = "Please pass the required parameters"
                 	ngx.say(cjson.encode(outputData))
 		end
-
-           }
+               }
         }
 	location /api_get_key {
             content_by_lua_block {
