@@ -1,7 +1,8 @@
 init_by_lua '
    cjson = require("cjson") -- cjson is a global variable
    local redis = require "resty.redis"
- 
+
+   -- make connection to redis database 
    function connect_db()
      local red = redis:new()
      red:set_timeout(1000) -- 1 sec
@@ -13,6 +14,7 @@ init_by_lua '
      return red
    end
 
+   --close the database connection
    function close_db(dbhandle)
       local ok, err = dbhandle:close()
       if not ok then
@@ -21,6 +23,7 @@ init_by_lua '
       end
    end
    
+   --fetch the value of key
    function get_key(db, key)
       local outputData = {}
       local res, err = db:get(key)
@@ -38,6 +41,7 @@ init_by_lua '
       return(outputData)
    end
 
+   --delete the key passed
    function del_key(db, key)
        local outputData = {}
        local res, err = db:del(key)
@@ -47,9 +51,10 @@ init_by_lua '
           return
        end
        outputData["success"] = key.." deleted successfully!"
-       return(outputData)                                                                                                                                                                                            
+       return(outputData)
    end 
 
+   --set the key, key and value are the parameters
    function set_key(db, key, value)
       local outputData = {}
       local ok, err = db:set(key, value)
@@ -61,6 +66,35 @@ init_by_lua '
       outputData["success"] = "OK"
       return(outputData) 
    end
+   
+    --process the template content which contain tokens
+   function processTokens (db, templateContentStr)
+      local searchParaCount=4
+      local tempContentStr=templateContentStr;
+      local findTokenStartingPos = string.find(tempContentStr, "</*--") 
+  
+      if (tempContentStr ~="" and findTokenStartingPos ~=nil and findTokenStartingPos>=0) then
+         local findTokenEndingPos = string.find(tempContentStr, "--*>") 
+         local tokenStr = string.sub(tempContentStr, findTokenStartingPos+searchParaCount, findTokenEndingPos-1)
+         if(tokenStr ~= "") then
+	   --table.insert(processedTokensArr, tokenStr)
+	   local replacementStr = ""
+	   local res = get_key(db, "token:"..tokenStr)
+	   if( res and res["aaData"] and res["aaData"] ~= "") then	
+	       local token_data_arr = cjson.decode(res["aaData"])
+	       replacementStr = token_data_arr["content"]
+	   else
+	       replacementStr = "Token "..tokenStr.." not found"
+	   end
+
+           local tempContentStr = string.gsub(templateContentStr, "<%*.-%*>", replacementStr, 1)
+           tempContentStr = processTokens(db, tempContentStr)
+           return tempContentStr
+         end
+     else
+        return tempContentStr
+     end
+  end
 ';
 server {
     listen	*:80 default_server;
@@ -138,13 +172,64 @@ server {
     }
 
         resolver                  8.8.8.8 valid=300s;
+    location /read_write_file {
+        content_by_lua_block {
+	   local function requiref(module)
+              require(module)
+           end
+           res = pcall(requiref,"io")
+	   if not(res) then
+	       ngx.say("Sorry, io module not found")
+	   else
+	       local file_path_str = "/etc/nginx/conf.d/test.lua"
+	       local file = io.open(file_path_str, "r")
+	       if file==nil
+               then
+                   ngx.say(file_path_str .. " can\'t read or does not exists")
+                   return
+		else
+		   ngx.say("file found")
+		   -- sets the default input file
+                    io.input(file)
 
-    location /test {
+                    -- read the lines in table lines
+                    for line in io.lines() do
+ 		    	ngx.say(line)
+                    end
+		    
+		   io.close(file)
+		end
+	   end
+	}
+    }
+
+    location /fetch_template_data {
       	content_by_lua_block {
-	   ngx.say(ngx.var.host)
-	   local args = ngx.req.get_uri_args()
-	   for key, val in pairs(args) do
-	       ngx.say(key.." : "..val)
+	   local key_str = ngx.var.arg_key or ""
+	   if( key_str ~= "" )
+           then
+		local db = connect_db()
+                if db == nil then
+                   outputData['error'] = "Failed to connect to database"
+                   ngx.say(cjson.encode(outputData))
+                   return
+                end
+                local res = get_key(db, key_str)
+		if( res and res['error'] and res['error'] ~= "") then
+		   ngx.say(cjson.encode(res))
+		elseif( res['aaData'] and res['aaData'] ~= "") then
+		   local contentData = cjson.decode(res['aaData'])
+		   local tempContentStr= processTokens(db, contentData['content'], tokensArr)
+		   contentData["content"] = tempContentStr
+		   ngx.say(cjson.encode(contentData))
+		else
+		  outputData['error'] = "Template not found"
+                  ngx.say(cjson.encode(outputData))
+		end
+		close_db(db)
+                return
+	   else
+		ngx.say("Please pass the required parameters")
 	   end
 	}
     }	
