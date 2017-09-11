@@ -54,7 +54,7 @@ init_by_lua '
        return(outputData)
    end 
 
-   --set the key, key and value are the parameters
+   --set the key, key and value passed
    function set_key(db, key, value)
       local outputData = {}
       local ok, err = db:set(key, value)
@@ -66,8 +66,8 @@ init_by_lua '
       outputData["success"] = "OK"
       return(outputData) 
    end
-   
-    --process the template content which contain tokens
+  
+   --process the template content which contain tokens
    function processTokens (db, templateContentStr)
       local searchParaCount=4
       local tempContentStr=templateContentStr;
@@ -77,12 +77,21 @@ init_by_lua '
          local findTokenEndingPos = string.find(tempContentStr, "--*>") 
          local tokenStr = string.sub(tempContentStr, findTokenStartingPos+searchParaCount, findTokenEndingPos-1)
          if(tokenStr ~= "") then
-	   --table.insert(processedTokensArr, tokenStr)
 	   local replacementStr = ""
 	   local res = get_key(db, "token:"..tokenStr)
 	   if( res and res["aaData"] and res["aaData"] ~= "") then	
 	       local token_data_arr = cjson.decode(res["aaData"])
-	       replacementStr = token_data_arr["content"]
+	       local tokenContentStr = token_data_arr["content"]
+
+	       local temptokenStr= string.gsub(tokenStr, "%-", "%%-")
+
+	       local findTokenInTempStr= string.find(tokenContentStr, temptokenStr)
+
+	       if ( findTokenInTempStr ~=nil and findTokenInTempStr>=0) then
+	       	  replacementStr = "* RECURSION : "..tokenStr.." *" 
+	       else
+	          replacementStr = tokenContentStr 
+	       end
 	   else
 	       replacementStr = "Token "..tokenStr.." not found"
 	   end
