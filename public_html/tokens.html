@@ -428,6 +428,35 @@
 
     <!-- Main content -->
     <section class="content">
+		<div CLASS="row">
+					<div CLASS="col-md-12">
+						<div class="clearfix hidden-xs">
+      						<div class="form-group no-margin">
+     							<div class="pull-right margin-bottom-10 ">
+								<div class="form-inline" style="">                 	          
+                 					<div class="btn-inline display-inline-block">
+										<input class="form-control searchFieldClass keyword_type" id="searchField" style="min-width:225px; height:36px;" placeholder="Search here.." name="keyword" value="" type="text">
+										<button class="btn btn-left-align btn-link no-shadow bg-transparent no-padding-top padding-right-10 right-auto left" type="button" id="searchBtn"><i class="glyphicon glyphicon-search"></i></button>
+									</div>
+                                   	 <a href="token.html" class="btn btn-danger btn-color padingmix  btn-icon-left btn-sm editorLink " style=""> <i class="fa fa-plus"></i>Enter a new</a> 
+                  				</div>
+         					</div>
+      						</div>
+     					</div>
+											
+						<div class="visible-xs ">
+						
+							<div class="row">
+								<div class="col-lg-6 col-sm-12 col-xs-12">
+									<div>
+											<input class="form-control xs-margin-btm10 searchFieldClass" required="" id="smallSearchField" name="keyword" placeholder="Search..." value="" type="text">
+                     						<a href="token.html" class="btn btn-danger btn-color padingmix  btn-icon-left btn-sm editorLink" STYLE="width:100%; margin:10px 0px;"> <i class="fa fa-plus"></i>Enter a new</a>  
+                  					</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		</div>
 		<div class="row">
 	  		<div class="content table-responsive table-full-width">
 		 		<div class="table-responsive" style="border:none;" >
@@ -468,8 +497,13 @@
 <script src="js/jquery-2.2.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
- 	$.getJSON("/api_fetch_list?search=token",function(html){
+var searchStr ="";
+function load_data(){
+	var requestJson = "/api_fetch_list?search=token";
+	if(searchStr!="undefined" && searchStr!=""){
+		requestJson+=":"+searchStr
+	}
+	$.getJSON(requestJson,function(html){
 		if(html.aaData && html.aaData.length>0){
 			var drawContentStr='';
 			$.each(html.aaData, function(i,row){
@@ -493,8 +527,33 @@ $(document).ready(function() {
         	breakpoint: 751
       	});
 	});
+}
+
+$(document).ready(function() {
+ 		load_data();
+	
+		$('#searchField').keypress(function (e) {
+  			if (e.which == 13) {
+    			searchStr = $('#searchField').val();
+    			$('#table-breakpoint').basictable('destroy');
+    			load_data();
+  			}
+		});
+		
+		$('#smallSearchField').keypress(function (e) {
+  			if (e.which == 13) {
+    			searchStr = $('#smallSearchField').val();
+    			$('#table-breakpoint').basictable('destroy');
+    			load_data();
+  			}
+		});
+		$("#searchBtn").click(function()	{
+			searchStr = $('#searchField').val();
+			$('#table-breakpoint').basictable('destroy');
+			load_data();
+		});
 });
-  </script>
+</script>
 <script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
 <script src="js/custom.js"></script>
