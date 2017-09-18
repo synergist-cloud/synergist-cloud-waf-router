@@ -547,7 +547,7 @@ $(document).ready(function() {
 				dataType: 'json',
 				success: function(response){
 					if(response.success){
-						window.location.href = "/site.html?code="+$("#code").val()+"&"+Math.random();
+						window.location.href = "site.html?code="+$("#code").val()+"&"+Math.random();
 					} else if(response.error) {
 						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 					}else {

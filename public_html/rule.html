@@ -548,6 +548,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.validate.js"></script>
 <script type="text/javascript">
+var rule_type_selected='', selected_upstreams=_val='';
 	function fetch_list_details(fetch_list, display_id){
 		$.getJSON("/api_get_key?key=list:"+fetch_list,function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
@@ -579,13 +580,23 @@ $(document).ready(function() {
 		});
 		
 	$("#upstreams").change(function(){
-		$("#proxy_pass").val("http://"+$(this).val());
+		var tempValue = $(this).val();
+		if(tempValue=="" && tempValue==null && selected_upstreams!=""){
+			tempValue = selected_upstreams;
+		}
+		if(tempValue!="" && tempValue!==null){
+			tempValue=tempValue.replace('upstream:', '')
+			$("#proxy_pass").val("http://"+tempValue);
+		}
 	});
 	
 	$("#rule_type").change(function(){
 		$("#condition_ui").show();
 		$(".rule_defined_ui").hide();
 		var s_val= $(this).val();
+		if(s_val=="" && s_val==null && rule_type_selected!=""){
+			s_val = rule_type_selected;
+		}	
 		if(s_val!=""){
 			$("."+s_val).show();
 		}
@@ -607,9 +618,11 @@ $(document).ready(function() {
 				$.each(aaDataObj, function(key,value){
 					$("#"+key).val(value);
 					if(key=="rule_type"){
+						rule_type_selected = value;
 						$("#rule_type").trigger("change");
 					}
 					if(key=="upstreams"){
+						selected_upstreams =  value;
 						$("#upstreams").trigger("change");
 					}
 					if(key=="enable_cache"){
@@ -659,7 +672,7 @@ $(document).ready(function() {
 				dataType: 'json',
 				success: function(response){
 					if(response.success){
-						window.location.href = "/rule.html?id=rule:"+tokenStr+"&"+Math.random();
+						window.location.href = "rule.html?id=rule:"+tokenStr+"&"+Math.random();
 					} else if(response.error) {
 						$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 					}else {

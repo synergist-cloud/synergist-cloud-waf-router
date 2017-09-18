@@ -547,7 +547,7 @@
 								dataType: 'json',
 								success: function(response){
 									if(response.success){
-										window.location.href = "/url_form.html?id=url:"+tokenStr;
+										window.location.href = "url_form.html?id=url:"+tokenStr;
 									} else if(response.error) {
 										$('#contentForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 									}else {

@@ -712,7 +712,7 @@ function resetItemForm(){
 					dataType: 'json',
 					success: function(response){
 						if(response.success){
-							window.location.href = "/list.html?id="+keyStr+"&"+Math.random();
+							window.location.href = "list.html?id="+keyStr+"&"+Math.random();
 						} else if(response.error) {
 							$('#EntryForm').before('<div class="alert alert-error alert-dismissable uploadFile"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'+response.error+'</div>');
 						}else {

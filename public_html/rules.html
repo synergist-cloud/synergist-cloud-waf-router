@@ -513,7 +513,7 @@ function load_data(){
 					valueObj = JSON.parse(valueObj);
 				}
 				drawContentStr+='<td>'+valueObj.rule_type+'</td><td>'+valueObj.location+'</td>';
-				drawContentStr+='<td><a href="rule.html?id='+row.key+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
+				drawContentStr+='<td><a href="rule.html?id='+row.key+'&'+Math.random()+'" title="Edit"><i class="fa fa-edit"></i></a>&nbsp;<a href="javascript:void(0)" onClick="delete_key(\''+row.key+'\');" title="Delete"><i class="fa fa-trash"></i></a></td>';
 				drawContentStr+='</tr>';
 			});
 			$('#display_content').html(drawContentStr);
