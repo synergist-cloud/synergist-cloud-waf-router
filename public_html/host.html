@@ -514,9 +514,10 @@
 									</div>
 								<div CLASS="row">
   									<div class="itemsContent col-md-12" id="itemsTable">
-    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Selected Rules</label>
-    									<input type="hidden" id="rules" name="rules" value="">
-										<div CLASS="table-responsive">
+    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Selected Rules<sup class="required">*</sup></label>
+    									<div CLASS="table-responsive">
+    										<input type="hidden" id="rules" name="rules" value="">
+										
 										   	<table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint">
 												<thead>
 												  <tr class="item">
@@ -816,7 +817,11 @@ $(document).ready(function() {
 		},
 		rules: {
 			name: { required: true },
-			root_path: { required: true }
+			root_path: { required: true },
+			rules : { required: true }
+		},
+		messages: {
+			rules: "Please add some rules",
 		},
 		submitHandler: function(form) {
 			generateObjectJson();

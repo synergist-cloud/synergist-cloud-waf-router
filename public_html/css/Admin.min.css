@@ -5003,3 +5003,6 @@ color:#fff!important;
 .lastClickedLinkCss p{
 	background:#fff; padding: 1px 3px 0px 17px; line-height:40px; margin-left:-3px; margin-bottom:0px; border-bottom: 1px solid #ddd;
 }
+.error {
+color: #d9534f;
+}

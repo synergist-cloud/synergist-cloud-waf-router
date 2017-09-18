@@ -463,9 +463,10 @@
 									</div>
 									<div CLASS="row">
   									<div class="itemsContent col-md-12" id="itemsTable">
-    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">List Items</label>
-    									<input type="hidden" id="list_details" name="list_details" value="">
-										<div CLASS="table-responsive">
+    									<label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">List Items<sup class="required">*</sup></label>
+    									<div CLASS="table-responsive">
+    										<input type="hidden" id="list_details" name="list_details" value="">
+										
 										   	<table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="table-breakpoint">
 												<thead>
 												  <tr class="item">
@@ -692,7 +693,11 @@ function resetItemForm(){
 			},
 			rules: {
 				name: { required: true },
-				code: { required: true }
+				code: { required: true },
+				list_details : { required: true }
+			},
+			messages: {
+				list_details: "Please add list items",
 			},
 			submitHandler: function(form) {
 				generateObjectJson();

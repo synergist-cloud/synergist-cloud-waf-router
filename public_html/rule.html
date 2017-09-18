@@ -537,9 +537,6 @@
       </div>
       <!-- /.row (main row) -->
 
-    </section>
-
-  </div>
 	<footer class="main-footer">
 	    <strong>Copyright &copy; 2016-2017 <a href="http://www.synergist.co.uk" target="_blank">Synergist</a>.</strong> All rights reserved.
   	</footer>
@@ -578,7 +575,7 @@ $(document).ready(function() {
 				$("#upstreams").html(contentStr);
 			}
 		});
-		
+				
 	$("#upstreams").change(function(){
 		var tempValue = $(this).val();
 		if(tempValue=="" && tempValue==null && selected_upstreams!=""){
@@ -609,6 +606,9 @@ $(document).ready(function() {
 		// fetch rules type
 		fetch_list_details("rule-type", "rule_type");
 		
+		// fetch rewrite flags
+		fetch_list_details("rewrite-flag", "rewrite_flag");
+	
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 		$.getJSON("/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){

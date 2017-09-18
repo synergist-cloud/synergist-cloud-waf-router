@@ -434,8 +434,7 @@
 	 <div class="row">
              <div class=" col-sm-12 col-lg-12">
                <input type="hidden" class="form-control" name="uuid" id="uuid"/>
-               <input type="hidden" class="form-control" name="server_details" id="server_details" value=""/>
-  
+                
   <div class="form-group">
     <label for="" class="col-sm-2 control-label">Name<sup class="required">*</sup></label>
     <div class="col-sm-5 ">
@@ -455,16 +454,17 @@
 	<div CLASS="ROW">
     <div CLASS="col-md-12 itemsContent" STYLE="margin-left:13px;">
       <span style="float:right; font-weight:bold;">
-	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hostDetailsModules" style="margin-bottom: 10px;">+ Add new host details</button>
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#hostDetailsModules" style="margin-bottom: 10px;">+ Add new address</button>
 	</span>
       </div>
     </div>
     
   <div CLASS="row">
     <div class="itemsContent col-md-12" id="itemsTable">
-      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Add new address</label>
+      <label for="" class="col-lg-1 col-sm-12 control-label" STYLE="padding-left:0px;">Upstream details<sup class="required">*</sup></label>
       <div >
 	<div CLASS="table-responsive">
+		<input type="hidden" class="form-control" name="server_details" id="server_details" value=""/>
 	  <table class="table table-striped  table-bordered table-hover custom-tbl-st bt" id="sub_table">
 	    <thead>
 	      <tr class="item">
@@ -752,7 +752,11 @@ $(document).ready(function() {
 			}
 		},
 		rules: {
-			name: { required: true }
+			name: { required: true },
+			server_details : { required: true }
+		},
+		messages: {
+			server_details: "Please add some address(es)",
 		},
 		submitHandler: function(form) {
 			generateServerObjectJson();

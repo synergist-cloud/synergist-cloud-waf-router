@@ -439,20 +439,21 @@
     <div class="col-sm-5 ">
        <input class="form-control required" id="name" placeholder="Name" name="name" type="text" onblur="generate_manual_code('name','code');" onkeyup="generate_manual_code('name','code');">
     </div>
-    
+    </div><div class="form-group">
     <label for="" class="col-sm-1 control-label">Code<sup class="required">*</sup></label>
     <div class="col-sm-5 ">
        <input class="form-control required" id="code" placeholder="Code" name="code" type="text">
        <span STYLE="font-size:12px; color:#737373;">Unique value</span>
     </div>
   </div>
-  <div class="form-group">
+  <!--
+  	<div class="form-group">
    		<label for="" class="col-sm-1 control-label">Select Hosts</label>
     	<div class="col-sm-10 ">
     		<input class="form-control" id="hosts" name="hosts" type="hidden">
        		<select class="form-control" id="selected_hosts" multiple style="height:250px;"></select>
     	</div>
-  	</div>
+  	</div>-->
  			<div class="col-sm-12 margin-top-15 " align="CENTER">
                 <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
                 </div>
@@ -484,17 +485,17 @@ $(document).ready(function() {
 				var aaDataObj = JSON.parse(aaDataStr);
 				$.each(aaDataObj, function(key,value){
 					$("#"+key).val(value);
-					if(key=="hosts") {
+					/**if(key=="hosts") {
 						var selectedHosts = JSON.parse(value);
 						$("#selected_hosts").val(selectedHosts);
-					}
+					}**/
 				});
 			}
 		});
 	}
 	
 	// fetch hosts
-		$.getJSON("/api_fetch_list?search=host",function(result){
+	/**	$.getJSON("/api_fetch_list?search=host",function(result){
 			if(result.aaData && result.aaData.length>0){
 				var contentStr='<option value="">--Select--</option>';
 				$.each(result.aaData, function(i,row){
@@ -507,6 +508,7 @@ $(document).ready(function() {
 				$("#selected_hosts").html(contentStr);
 			}
 		});
+	**/
 		
     $("#EntryForm").validate({
 		ignore: "",
@@ -529,8 +531,9 @@ $(document).ready(function() {
 			code: { required: true }
 		},
 		submitHandler: function(form) {
-			var selected_rules = $("#selected_hosts").val();
+			/**var selected_rules = $("#selected_hosts").val();
 			$("#hosts").val(JSON.stringify(selected_rules));
+			**/
 			
 			var tokenStr=$("#uuid").val();
 			if(tokenStr=="") {
