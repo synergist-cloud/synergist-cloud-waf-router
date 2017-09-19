@@ -446,15 +446,20 @@
        <span STYLE="font-size:12px; color:#737373;">Unique value</span>
     </div>
   </div>
-  <!--
-  	<div class="form-group">
-   		<label for="" class="col-sm-1 control-label">Select Hosts</label>
-    	<div class="col-sm-10 ">
-    		<input class="form-control" id="hosts" name="hosts" type="hidden">
-       		<select class="form-control" id="selected_hosts" multiple style="height:250px;"></select>
-    	</div>
-  	</div>-->
- 			<div class="col-sm-12 margin-top-15 " align="CENTER">
+
+<div class="form-group" style="display:none;" id="selected_hosts_ui">
+  <label for="" class="col-sm-1 control-label">Selected Hosts</label>
+  <div class="col-sm-10 " id="selected_hosts">
+    
+    </div>
+  </div>
+<div class="form-group" style="display:none;" id="add_hosts_ui">
+  <label for="" class="col-sm-1 control-label"></label>
+  <div class="col-sm-10">
+    <a href="host.html" target="_blank" class="btn btn-info">Add a host for this site</a>
+    </div>
+  </div>
+			<div class="col-sm-12 margin-top-15 " align="CENTER">
                 <input class="btn btn-primary btn-color margin-right-5 btn-sm " value="Submit" type="submit">  
                 </div>
    </div>
@@ -495,20 +500,28 @@ $(document).ready(function() {
 	}
 	
 	// fetch hosts
-	/**	$.getJSON("/api_fetch_list?search=host",function(result){
-			if(result.aaData && result.aaData.length>0){
-				var contentStr='<option value="">--Select--</option>';
-				$.each(result.aaData, function(i,row){
-					var selectedStr='';
-					if(jQuery.inArray( row.key , selectedHosts )!=-1){
-						selectedStr ='selected';
+	$.getJSON("/api_fetch_list?search=host",function(result){
+		if(result.aaData && result.aaData.length>0){
+			var contentStr='';
+			$.each(result.aaData, function(i,row){
+				if(row.value && row.value!=""){
+					var hostDetails = JSON.parse(row.value);
+					if(hostDetails){
+						hostDetails = JSON.parse(hostDetails);
 					}
-					contentStr+='<option value="'+row.key+'" '+selectedStr+'>'+row.key+'</option>';
-				});
-				$("#selected_hosts").html(contentStr);
+					if(hostDetails.site && hostDetails.site==$("#code").val()){
+						contentStr+='<div class="col-md-2 col-sm-6"><a href="host.html?id='+row.key+'" target="_blank" class="btn btn-info">'+row.key+'</a></div>';
+					}
+				}
+			});
+			if(contentStr!=""){
+				$("#selected_hosts_ui").show();
+			}else if($("#code").val()!=""){
+				$("#add_hosts_ui").show();
 			}
-		});
-	**/
+			$("#selected_hosts").html(contentStr);
+		}
+	});
 		
     $("#EntryForm").validate({
 		ignore: "",

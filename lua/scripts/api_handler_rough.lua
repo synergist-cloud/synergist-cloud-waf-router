@@ -27,14 +27,15 @@ init_by_lua '
    function get_key(db, key)
       local outputData = {}
       local res, err = db:get(key)
+
       if not res then
           outputData["error"] = "Failed to get "..key..": "..err
-	  return
+	  return(outputData)
       end
 
       if res == ngx.null then
           outputData["error"] = key.." not found."
-	  return
+	  return(outputData)
       end
       outputData["success"] = "OK"
       outputData["aaData"]  = res
@@ -66,7 +67,7 @@ init_by_lua '
       outputData["success"] = "OK"
       return(outputData) 
    end
-  
+
    --process the template content which contain tokens
    function processTokens (db, templateContentStr)
       local searchParaCount=4
@@ -352,30 +353,38 @@ server {
 
            }
         }
+
 	location /api_get_key {
             content_by_lua_block {
                 local unique_str = ngx.var.arg_key or ""
-		local outputData = {}
+		local args = ngx.req.get_uri_args()
+		for key, val in pairs(args) do
+		    if key == "key" then
+		       unique_str = val
+		    end
+		end
+		      local outputData = {}
                 if( unique_str~="" )
                     then
-			local db = connect_db()
-			if db == nil then
-			    outputData['error'] = "Failed to connect to database"
+				local db = connect_db()
+				      	 if db == nil then
+					           outputData['error'] = "Failed to connect to database"
                             ngx.say(cjson.encode(outputData))
                             return
-         		end
-			local res = get_key(db, unique_str)
-			ngx.say(cjson.encode(res))
+				end
+						local res = get_key(db, unique_str)
+						      	  ngx.say(cjson.encode(res))
                         -- or just close the connection right away:
-			close_db(db)
+			      close_db(db)
                         return
                  else
                         outputData['error'] = "Please pass the required parameters"
                         ngx.say(cjson.encode(outputData))
-			return
+					return
                  end
             }
-        }
+        }	
+
 	location /api_delete_key {
 	    content_by_lua_block {
                 local unique_str = ngx.var.arg_key or ""

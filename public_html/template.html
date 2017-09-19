@@ -547,13 +547,17 @@ function loadTokens(){
 				contentHtml+="<li>"+valueObj.code+"</li>";
 			});
      	}
-		$("#DragWordList").html(contentHtml);
-		$("#DragWordList li").draggable({
-			appendTo: "body",
-        	helper: "clone",
-        	cursor: "select",
-        	revert: "invalid"
-    	});
+     	if(contentHtml!=""){
+			$("#DragWordList").html(contentHtml);
+			$("#DragWordList li").draggable({
+				appendTo: "body",
+        		helper: "clone",
+        		cursor: "select",
+        		revert: "invalid"
+    		});
+    	}else{
+    		$("#DragWordList").before('<div class="alert alert-error">Sorry. no tokens found. To add a new token, please <a href="token.html" target="_blank">click here</a>!</div>');
+    	}
 	});
 }
     $(document).ready(function() {

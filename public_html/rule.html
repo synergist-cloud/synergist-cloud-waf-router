@@ -553,14 +553,20 @@ var rule_type_selected='', selected_upstreams=_val='';
 				var aaDataObj = JSON.parse(aaDataStr);
 				$.each(aaDataObj, function(key,value){
 					if(key=="list_details"){
-						var contentStr='<option value="">--Select--</option>';
+						var contentStr='';
 						var subDataObj = JSON.parse(value);
 						$.each(subDataObj, function(i,row){
 							contentStr+='<option value="'+row.value+'">'+row.label+'</option>';
 						});
-						$("#"+display_id).html(contentStr);
+						if(contentStr!=""){
+							$("#"+display_id).html('<option value="">--Select--</option>'+contentStr);
+						}else{
+							$("#"+display_id).after('<span style="color:red;font-style:italic;">Please define list with code : "'+fetch_list+'"</span>');
+						}
 					}
 				});
+			}else{
+				$("#"+display_id).after('<span style="color:red;font-style:italic;">Please define list with code : "'+fetch_list+'"</span>');
 			}
 		});
 	}
@@ -568,11 +574,17 @@ $(document).ready(function() {
 		// fetch upstreams
 		$.getJSON("/api_fetch_list?search=upstream",function(result){
 			if(result.aaData && result.aaData.length>0){
-				var contentStr='<option value="">--Select--</option>';
+				var contentStr='';
 				$.each(result.aaData, function(i,row){
 					contentStr+='<option value="'+row.key+'">'+row.key+'</option>';
 				});
-				$("#upstreams").html(contentStr);
+				if(contentStr!=""){
+					$("#upstreams").html('<option value="">--Select--</option>'+contentStr);
+				}else{
+					$("#upstreams").after('<a href="upstream.html" class="btn btn-info" target="_blank" style="margin-top:5px;">Add new upstream</span>');
+				}
+			}else{
+				$("#upstreams").after('<a href="upstream.html" class="btn btn-info" target="_blank" style="margin-top:5px;">Add new upstream</span>');
 			}
 		});
 				
@@ -601,14 +613,15 @@ $(document).ready(function() {
 			$("#condition_ui").hide();
 			fetch_list_details("static-content", "static_content");
 		}
+		if(s_val=="rewrite"){
+			// fetch rewrite flags
+			fetch_list_details("rewrite-flag", "rewrite_flag");
+		}
 	});
 	
 		// fetch rules type
 		fetch_list_details("rule-type", "rule_type");
 		
-		// fetch rewrite flags
-		fetch_list_details("rewrite-flag", "rewrite_flag");
-	
 	if(getUrlVars() && getUrlVars()["id"]  && getUrlVars()["id"]!="") {
 		$.getJSON("/api_get_key?key="+getUrlVars()["id"],function(result){
 			if(result.success && result.aaData && result.aaData.length>0){
