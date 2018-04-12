@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 #rsync -avzx /Users/balinderwalia/Documents/WebApplications/synergist-cloud-waf-router/conf/nginx.conf root@dev.synergist.cloud:/etc/nginx/conf/nginx.conf
