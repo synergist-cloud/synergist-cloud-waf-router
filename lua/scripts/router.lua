@@ -7,7 +7,7 @@ ngx.header.content_type = 'text/html'
         --end
 
 local template = require "resty.template"
-template.render("index-template.html", { messageStr = "matrix.sh!", systemInfoTxt =  ngx.req.raw_header() })
+template.render("index-template.html", { messageStr = "Matrix", systemInfoTxt =  ngx.req.raw_header() })
 
 --ngx.exit(ngx.HTTP_OK)
 
